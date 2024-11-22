@@ -1,0 +1,28 @@
+CREATE DATABASE IF NOT EXISTS library;
+
+USE library;
+
+DROP TABLE IF EXISTS books_authors;
+DROP TABLE IF EXISTS books;
+DROP TABLE IF EXISTS authors;
+
+CREATE TABLE books (
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(64) NOT NULL,
+  genre VARCHAR(64),
+  description LONGTEXT
+);
+
+CREATE TABLE authors (
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(64) NOT NULL,
+  surname VARCHAR(64) NOT NULL,
+  country_code CHAR(3) NOT NULL
+);
+
+CREATE TABLE books_authors (
+  book_id INT NOT NULL REFERENCES books(id) ON DELETE CASCADE,
+  author_id INT NOT NULL REFERENCES authors(id) ON DELETE CASCADE,
+  PRIMARY KEY(book_id, author_id)
+);
+

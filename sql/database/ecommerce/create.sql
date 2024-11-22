@@ -1,0 +1,53 @@
+CREATE DATABASE IF NOT EXISTS ecommerce;
+
+USE ecommerce;
+
+DROP TABLE IF EXISTS Products_Orders;
+DROP TABLE IF EXISTS Orders;
+DROP TABLE IF EXISTS Products_Carts;
+DROP TABLE IF EXISTS Carts;
+DROP TABLE IF EXISTS Products;
+DROP TABLE IF EXISTS Users;
+
+CREATE TABLE Users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  email VARCHAR(64) NOT NULL UNIQUE,
+  name VARCHAR(64) NOT NULL,
+  surname VARCHAR(64) NOT NULL
+);
+
+CREATE TABLE Products (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(128) NOT NULL,
+  description TEXT,
+  image_url VARCHAR(512),
+  price FLOAT NOT NULL
+);
+
+CREATE TABLE Carts (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT UNIQUE NOT NULL REFERENCES Users(id) ON DELETE CASCADE,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Products_Carts (
+  product_id INT NOT NULL REFERENCES Products(id),
+  cart_id INT NOT NULL REFERENCES Carts(id) ON DELETE CASCADE,
+  quantity INT NOT NULL,
+  PRIMARY KEY (product_id, cart_id)
+);
+
+CREATE TABLE Orders (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT REFERENCES Users(id) ON DELETE SET NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Products_Orders (
+  product_id INT NOT NULL REFERENCES Products(id),
+  order_id INT NOT NULL REFERENCES Orders(id),
+  quantity INT NOT NULL,
+  price FLOAT NOT NULL,
+  PRIMARY KEY (product_id, order_id)
+);
+
