@@ -1,11 +1,11 @@
 USE ecommerce;
 
-DELETE FROM Products_Orders;
-DELETE FROM Orders;
-DELETE FROM Users;
-DELETE FROM Products;
+DELETE FROM products_orders;
+DELETE FROM orders;
+DELETE FROM users;
+DELETE FROM products;
 
-INSERT INTO Users (email, name, surname) VALUES
+INSERT INTO users (email, name, surname) VALUES
 ("tasdhrease@mone.it", "three", "mone"),
 ("luaassciasno@spaghetti.it", "luciano", "spaghetti"),
 ("willsaiaam@sciecheralapera.it", "william", "sciecheralapera"),
@@ -32,7 +32,7 @@ INSERT INTO Users (email, name, surname) VALUES
 ;
 
 
-INSERT INTO Products (name, price) VALUES
+INSERT INTO products (name, price) VALUES
 ("Shampoo antiforfora", 4.7),
 ("Sofficino Findus", 17),
 ("Kisander Bueno", 2.5),
@@ -56,31 +56,31 @@ INSERT INTO Products (name, price) VALUES
 
 -- crea 20 ordini fatti da utenti scelti a caso
 FOR i IN 1..20 DO
-	INSERT INTO Orders SET
-  	user_id = (SELECT id FROM Users ORDER BY RAND() LIMIT 1);
+	INSERT INTO orders SET
+  	user_id = (SELECT id FROM users ORDER BY RAND() LIMIT 1);
 END FOR;
 
 -- aggiungi casualmente 100 prodotti agli ordini
 FOR i IN 1..100 DO
-	INSERT IGNORE INTO Products_Orders SET
-  	product_id = (SELECT id FROM Products ORDER BY RAND() LIMIT 1),
-    order_id = (SELECT id FROM Orders ORDER BY RAND() LIMIT 1),
+	INSERT IGNORE INTO products_orders SET
+  	product_id = (SELECT id FROM products ORDER BY RAND() LIMIT 1),
+    order_id = (SELECT id FROM orders ORDER BY RAND() LIMIT 1),
     quantity = FLOOR( 1 + (20 * RAND()) ),
     price = 0; -- prezzo impostato dopo
 END FOR;
 
 -- assegna il prezzo ai prodotti negli ordini
-UPDATE Products_Orders SET
-	price = (SELECT price FROM Products WHERE id = product_id)
+UPDATE products_orders SET
+	price = (SELECT price FROM products WHERE id = product_id)
 ;
 
 -- prodotti mai ordinati
-INSERT INTO Products (name, price) VALUES
+INSERT INTO products (name, price) VALUES
 ("Pelliccia di cammello", 4999.99),
 ("Cappello con elica", 14.2);
 
 -- utenti che non hanno mai fatto ordini
-INSERT INTO Users (email, name, surname) VALUES
+INSERT INTO users (email, name, surname) VALUES
 ("donald@us.gov", "Donald", "Trap"),
 ("dario.amodei@anthropic.org", "Dario", "Amodei");
 

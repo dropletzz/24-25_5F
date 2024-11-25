@@ -2,21 +2,21 @@ CREATE DATABASE IF NOT EXISTS ecommerce;
 
 USE ecommerce;
 
-DROP TABLE IF EXISTS Products_Orders;
-DROP TABLE IF EXISTS Orders;
-DROP TABLE IF EXISTS Products_Carts;
-DROP TABLE IF EXISTS Carts;
-DROP TABLE IF EXISTS Products;
-DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS products_orders;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS products_carts;
+DROP TABLE IF EXISTS carts;
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS users;
 
-CREATE TABLE Users (
+CREATE TABLE users (
   id INT PRIMARY KEY AUTO_INCREMENT,
   email VARCHAR(64) NOT NULL UNIQUE,
   name VARCHAR(64) NOT NULL,
   surname VARCHAR(64) NOT NULL
 );
 
-CREATE TABLE Products (
+CREATE TABLE products (
   id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(128) NOT NULL,
   description TEXT,
@@ -24,28 +24,28 @@ CREATE TABLE Products (
   price FLOAT NOT NULL
 );
 
-CREATE TABLE Carts (
+CREATE TABLE carts (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  user_id INT UNIQUE NOT NULL REFERENCES Users(id) ON DELETE CASCADE,
+  user_id INT UNIQUE NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE Products_Carts (
-  product_id INT NOT NULL REFERENCES Products(id),
-  cart_id INT NOT NULL REFERENCES Carts(id) ON DELETE CASCADE,
+CREATE TABLE products_carts (
+  product_id INT NOT NULL REFERENCES products(id),
+  cart_id INT NOT NULL REFERENCES carts(id) ON DELETE CASCADE,
   quantity INT NOT NULL,
   PRIMARY KEY (product_id, cart_id)
 );
 
-CREATE TABLE Orders (
+CREATE TABLE orders (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  user_id INT REFERENCES Users(id) ON DELETE SET NULL,
+  user_id INT REFERENCES users(id) ON DELETE SET NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE Products_Orders (
-  product_id INT NOT NULL REFERENCES Products(id),
-  order_id INT NOT NULL REFERENCES Orders(id),
+CREATE TABLE products_orders (
+  product_id INT NOT NULL REFERENCES products(id),
+  order_id INT NOT NULL REFERENCES orders(id),
   quantity INT NOT NULL,
   price FLOAT NOT NULL,
   PRIMARY KEY (product_id, order_id)
