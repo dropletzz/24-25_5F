@@ -1,5 +1,7 @@
 USE ecommerce;
 
+DELETE FROM products_carts;
+DELETE FROM carts;
 DELETE FROM products_orders;
 DELETE FROM orders;
 DELETE FROM users;
@@ -19,7 +21,7 @@ INSERT INTO users (email, name, surname) VALUES
 ("massimo@bosssaettiasdasd.idast", "masadssimo", "bossetti"),
 ("igor@mitisda.it", "Igor", "miti"),
 ("afghani21121@yahoo.com", "cielo", "blu"),
-("tizio@libero.it","spagnola", "airbag"),
+("tizio@libero.it","tiziano", "tizi"),
 ("cadsiompi@aruba.it", "ciompi", "ciampi"),
 ("musasdso@lini.it", "asMusasso", "Lini"),
 ("andreasi@libero.it", "andrej", "vladovic"),
@@ -55,24 +57,43 @@ INSERT INTO products (name, price) VALUES
 ;
 
 -- crea 20 ordini fatti da utenti scelti a caso
-FOR i IN 1..20 DO
-	INSERT INTO orders SET
-  	user_id = (SELECT id FROM users ORDER BY RAND() LIMIT 1);
-END FOR;
+DROP PROCEDURE IF EXISTS CreateRandomOrders;
+CREATE PROCEDURE CreateRandomOrders()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    WHILE i <= 20 DO
+        INSERT INTO orders (user_id)
+        SELECT id FROM users ORDER BY RAND() LIMIT 1;
+        SET i = i + 1;
+    END WHILE;
+END;
+CALL CreateRandomOrders();
 
 -- aggiungi casualmente 100 prodotti agli ordini
-FOR i IN 1..100 DO
-	INSERT IGNORE INTO products_orders SET
-  	product_id = (SELECT id FROM products ORDER BY RAND() LIMIT 1),
-    order_id = (SELECT id FROM orders ORDER BY RAND() LIMIT 1),
-    quantity = FLOOR( 1 + (20 * RAND()) ),
-    price = 0; -- prezzo impostato dopo
-END FOR;
+DROP PROCEDURE IF EXISTS CreateRandomProductsOrders;
+CREATE PROCEDURE CreateRandomProductsOrders()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    WHILE i <= 100 DO
+			INSERT IGNORE INTO products_orders SET
+  		product_id = (SELECT id FROM products ORDER BY RAND() LIMIT 1),
+    	order_id = (SELECT id FROM orders ORDER BY RAND() LIMIT 1),
+    	quantity = FLOOR( 1 + (20 * RAND()) ),
+		price = 0; -- prezzo impostato dopo
+        SET i = i + 1;
+    END WHILE;
+END;
+CALL CreateRandomProductsOrders();
 
 -- assegna il prezzo ai prodotti negli ordini
 UPDATE products_orders SET
 	price = (SELECT price FROM products WHERE id = product_id)
 ;
+
+-- modifica il prezzo negli ordini per un prodotto
+UPDATE products_orders SET
+	price = price * (1 + RAND() - 0.5)
+WHERE product_id = (SELECT product_id FROM products_orders ORDER BY RAND() LIMIT 1);
 
 -- prodotti mai ordinati
 INSERT INTO products (name, price) VALUES
