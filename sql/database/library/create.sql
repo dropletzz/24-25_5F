@@ -5,9 +5,16 @@ USE library;
 DROP TABLE IF EXISTS books_authors;
 DROP TABLE IF EXISTS books;
 DROP TABLE IF EXISTS authors;
+DROP TABLE IF EXISTS publishers;
+
+CREATE TABLE publishers (
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(64) NOT NULL
+);
 
 CREATE TABLE books (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  publisher_id INT REFERENCES publishers(id),
   title VARCHAR(64) NOT NULL,
   genre VARCHAR(64),
   description LONGTEXT
@@ -25,4 +32,3 @@ CREATE TABLE books_authors (
   author_id INT NOT NULL REFERENCES authors(id) ON DELETE CASCADE,
   PRIMARY KEY(book_id, author_id)
 );
-
