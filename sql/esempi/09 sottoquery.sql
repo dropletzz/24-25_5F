@@ -27,11 +27,3 @@ CREATE TABLE users_summary (
 INSERT INTO users_summary (user_id, order_count)
 SELECT users.id, COUNT(orders.id)
 FROM users LEFT JOIN orders ON users.id = orders.user_id;
-
-
--- copio i prodotti contenuti in un altro ordine dentro a quello appena creato
--- (sto facendo una insert dove le righe da inserire vengono prese dai risutlati di una SELECT)
-INSERT INTO products_orders (order_id, product_id, quantity, price)
-SELECT 80, po.product_id, po.quantity, po.price
-FROM products_orders po
-WHERE order_id = 22;
