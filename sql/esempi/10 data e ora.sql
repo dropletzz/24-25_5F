@@ -1,44 +1,43 @@
 
+-- https://mariadb.com/kb/en/date-time-functions/
+	
+CREATE DATABASE IF NOT EXISTS date_prova;
+USE date_prova;
 
-USE ecommerce;
-
--- creo un utente
-INSERT INTO users (email, name, surname) VALUES
-    email = "mario.braghe@gmail.it",
-    name = "Mario",
-    surname = "Braghe"
-;
-
--- vorrei creare un ordine associato all'utente
--- ma non conosco il suo id:
--- posso ottenerlo tramite una sottoquery
-INSERT INTO orders SET
-    user_id = (SELECT id FROM users WHERE email = "mario.braghe@gmail.it")
-;
-
--- L'operatore IN controlla che un valore sia
--- contenuto in una lista. Come nei seguenti esempi:
-
--- seleziona gli utenti con determinati id
-SELECT * FROM users
-WHERE id IN (5, 12, 23);
--- che e' equivalente a questa
-SELECT * FROM users
-WHERE id = 5 OR id = 12 OR id = 23;
-
--- La lista di valori passata a IN puo' anche essere
--- il risultato di una sottoquery, ad esempio:
-
--- seleziona gli utenti che hanno fatto almeno un post
-SELECT * FROM users
-WHERE id IN (SELECT user_id FROM posts);
-
--- seleziona gli utenti che hanno un
--- post che ha ricevuto almeno 3 like
-SELECT * FROM users
-WHERE id IN (
-  SELECT posts.user_id
-  FROM posts JOIN post_likes ON posts.id = post_likes.post_id
-  GROUP BY posts.id
-  HAVING COUNT(*) >= 3
+CREATE TABLE tipi (
+  solo_data DATE, -- '2003-10-24'
+  solo_ora TIME, -- '14:30:15'
+  data_e_ora1 DATETIME, -- '2003-10-24 14:30:15'
+  data_e_ora2 TIMESTAMP -- '2003-10-24 14:30:15'
+  -- differenze tra DATETIME e TIMESTAMP:
+  -- * come viene gestito il fuso orario
+  -- * limiti: timestamp non va oltre l'anno 2038
 );
+
+CREATE TABLE eventi (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(64) NOT NULL,
+  date DATETIME NOT NULL
+);
+
+INSERT INTO eventi (name, date) VALUES
+	('Fiera della porchetta', '2022-11-30 23:59:59'),
+  ('Festa della musica', '2024-11-23 23:59:59'),
+  ('Concerto alla Scala', '2024-12-30 23:59:59')
+;
+
+-- funzioni per estrarre parti di una data:
+SELECT 
+	YEAR(date) AS anno,
+  MONTH(date) AS mese,
+  DAY(date) AS giorno,
+  HOUR(date) AS giorno,
+  MINUTE(date) AS minuti,
+  SECOND(date) AS secondi
+FROM eventi;
+
+
+-- DATEDIFF(d1, d2) restituisce la differenza tra
+-- d1 e d2 calcolata in giorni
+SELECT name, DATEDIFF(date, NOW()) AS diff
+FROM eventi;
