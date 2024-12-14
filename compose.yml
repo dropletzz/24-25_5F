@@ -4,16 +4,14 @@ services:
   webserver:
     build:
       context: 'web'
-      dockerfile: 'server.docker'
     ports: 
-      - 80:80
+      - 1337:80
     volumes:
       - ./web/php:/var/www/html
 
   database:
     build:
       context: 'sql'
-      dockerfile: 'db.docker'
     ports: 
       - 3306:3306
     environment:
