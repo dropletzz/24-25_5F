@@ -1,0 +1,13 @@
+
+<libri>
+    <libro>
+        <titolo>La divina Commedia</titolo>
+        <autore>Dante Alighieri</autore>
+        <prezzo>32.2</prezzo>
+    </libro>
+    <libro>
+        <titolo>Homo Deus</titolo>
+        <autore>Yuval Noah Harari</autore>
+        <prezzo>12.2</prezzo>
+    </libro>
+</libri>

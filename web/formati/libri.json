@@ -1,0 +1,15 @@
+
+{
+    "libri": [
+        {
+            "titolo": "Divina Commedia",
+            "autore": "Dante Alighieri",
+            "prezzo": 32.2
+        },
+        {
+            "titolo": "Homo Deus",
+            "autore": "Juval Noah Harari",
+            "prezzo": 12.5
+        }
+    ]
+}
