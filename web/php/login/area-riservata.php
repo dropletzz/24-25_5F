@@ -9,9 +9,6 @@
 <body>
 
     <?php
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-
     $servername = "database";
     $username = "root";
     $password = "";
@@ -25,10 +22,11 @@
     }
 
     // !!! Rischio di SQL injection !!!
+    $email = $_POST['email'];
     $sql = "SELECT * FROM users WHERE email = '{$email}';";
+    echo "QUERY> " . $sql . "<br/>";
 
     $result = $conn->query($sql);
-    // echo $result;
 
     if ($result->num_rows > 0) {
         echo "Login effettuato con successo";
