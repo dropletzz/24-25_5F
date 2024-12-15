@@ -7,7 +7,7 @@ services:
     ports: 
       - 1337:80
     volumes:
-      - ./web/php:/var/www/html
+      - ./web/public:/var/www/html
 
   database:
     build:
