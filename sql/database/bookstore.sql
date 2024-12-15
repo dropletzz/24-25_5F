@@ -142,32 +142,72 @@ INSERT INTO users (email, name, surname) VALUES
 ("Totti@orrina.it", "Totti", "orrina")
 ;
 
-DROP PROCEDURE IF EXISTS RandomOrders;
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS RandomOrders$$
 CREATE PROCEDURE RandomOrders()
 BEGIN
     DECLARE i INT DEFAULT 1;
+    DECLARE random_user_id INT;
+
     WHILE i <= 20 DO
-			INSERT IGNORE INTO orders SET
-        user_id = (SELECT id FROM users ORDER BY RAND() LIMIT 1);
-      SET i = i + 1;
+        -- seleziona un id utente casuale
+        SELECT id INTO random_user_id
+        FROM users
+        ORDER BY RAND()
+        LIMIT 1;
+
+        -- inserisci un ordine per  quell'utente
+        INSERT IGNORE INTO orders (user_id)
+        VALUES (random_user_id);
+
+        SET i = i + 1;
     END WHILE;
-END;
+END$$
+
+DELIMITER ;
+
 CALL RandomOrders();
 
-DROP PROCEDURE IF EXISTS RandomProductsOrders;
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS RandomProductsOrders$$
 CREATE PROCEDURE RandomProductsOrders()
 BEGIN
     DECLARE i INT DEFAULT 1;
+    DECLARE random_book_id INT;
+    DECLARE random_order_id INT;
+    DECLARE random_quantity INT;
+
     WHILE i <= 55 DO
-			INSERT IGNORE INTO books_orders SET
-        book_id = (SELECT id FROM books ORDER BY RAND() LIMIT 1),
-        order_id = (SELECT id FROM orders ORDER BY RAND() LIMIT 1),
-        quantity = FLOOR(1 + (5 * RAND())),
-        price = 0; -- prezzo impostato dopo
-      SET i = i + 1;
+        -- seleziona id di un libro casuale
+        SELECT id INTO random_book_id
+        FROM books
+        ORDER BY RAND()
+        LIMIT 1;
+
+        -- seleziona id di un ordine casuale
+        SELECT id INTO random_order_id
+        FROM orders
+        ORDER BY RAND()
+        LIMIT 1;
+
+        -- numero casuale tra 1 e 5 (compresi)
+        SET random_quantity = FLOOR(1 + (5 * RAND()));
+
+        -- aggiungi libro all'ordine
+        INSERT IGNORE INTO books_orders (book_id, order_id, quantity, price)
+        VALUES (random_book_id, random_order_id, random_quantity, 0);
+
+        SET i = i + 1;
     END WHILE;
-END;
+END$$
+
+DELIMITER ;
+
 CALL RandomProductsOrders();
+
+
 
 -- tutti gli ordini sono di un mese fa
 UPDATE orders SET created_at = NOW() - INTERVAL 31 DAY;

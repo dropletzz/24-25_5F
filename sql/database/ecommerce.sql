@@ -104,33 +104,75 @@ INSERT INTO products (name, price) VALUES
 ;
 
 -- crea 20 ordini fatti da utenti scelti a caso
-DROP PROCEDURE IF EXISTS CreateRandomOrders;
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS CreateRandomOrders$$
 CREATE PROCEDURE CreateRandomOrders()
 BEGIN
     DECLARE i INT DEFAULT 1;
+    DECLARE random_user_id INT;
+
     WHILE i <= 20 DO
+        -- Seleziona un ID utente casuale
+        SELECT id INTO random_user_id
+        FROM users
+        ORDER BY RAND()
+        LIMIT 1;
+
+        -- Inserisce un ordine casuale
         INSERT INTO orders (user_id)
-        SELECT id FROM users ORDER BY RAND() LIMIT 1;
+        VALUES (random_user_id);
+
         SET i = i + 1;
     END WHILE;
-END;
+END$$
+
+DELIMITER ;
+
+-- Esegui la procedura
 CALL CreateRandomOrders();
 
+
 -- aggiungi casualmente 100 prodotti agli ordini
-DROP PROCEDURE IF EXISTS CreateRandomProductsOrders;
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS CreateRandomProductsOrders$$
 CREATE PROCEDURE CreateRandomProductsOrders()
 BEGIN
     DECLARE i INT DEFAULT 1;
+    DECLARE random_product_id INT;
+    DECLARE random_order_id INT;
+    DECLARE random_quantity INT;
+
     WHILE i <= 100 DO
-			INSERT IGNORE INTO products_orders SET
-  		product_id = (SELECT id FROM products ORDER BY RAND() LIMIT 1),
-    	order_id = (SELECT id FROM orders ORDER BY RAND() LIMIT 1),
-    	quantity = FLOOR( 1 + (20 * RAND()) ),
-		price = 0; -- prezzo impostato dopo
+        -- Seleziona un ID prodotto casuale
+        SELECT id INTO random_product_id
+        FROM products
+        ORDER BY RAND()
+        LIMIT 1;
+
+        -- Seleziona un ID ordine casuale
+        SELECT id INTO random_order_id
+        FROM orders
+        ORDER BY RAND()
+        LIMIT 1;
+
+        -- Genera una quantità casuale tra 1 e 20
+        SET random_quantity = FLOOR(1 + (20 * RAND()));
+
+        -- Inserisce il prodotto nell'ordine
+        INSERT IGNORE INTO products_orders (product_id, order_id, quantity, price)
+        VALUES (random_product_id, random_order_id, random_quantity, 0);
+
         SET i = i + 1;
     END WHILE;
-END;
+END$$
+
+DELIMITER ;
+
+-- Esegui la procedura
 CALL CreateRandomProductsOrders();
+
 
 -- assegna il prezzo ai prodotti negli ordini
 UPDATE products_orders SET
