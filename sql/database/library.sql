@@ -32,9 +32,9 @@ CREATE TABLE books_authors (
   author_id INT NOT NULL REFERENCES authors(id) ON DELETE CASCADE,
   PRIMARY KEY(book_id, author_id)
 );
------------------------
--- FINE STRUTTURA DB --
------------------------
+-- ------------------ --
+-- FINE STRUTTURA DB  --
+-- ------------------ --
 
 
 INSERT INTO publishers (name) VALUES

@@ -56,9 +56,9 @@ CREATE TABLE reviews (
   description TEXT,
   PRIMARY KEY (book_id, user_id)
 );
------------------------
--- FINE STRUTTURA DB --
------------------------
+-- ------------------ --
+-- FINE STRUTTURA DB  --
+-- ------------------ --
 
 
 INSERT INTO authors (name, surname, country_code) VALUES

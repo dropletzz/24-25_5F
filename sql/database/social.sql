@@ -56,9 +56,9 @@ CREATE TABLE comment_likes (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE
 );
------------------------
--- FINE STRUTTURA DB --
------------------------
+-- ------------------ --
+-- FINE STRUTTURA DB  --
+-- ------------------ --
 
 
 INSERT INTO users (email, first_name, last_name, about_me) VALUES

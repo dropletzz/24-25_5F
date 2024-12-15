@@ -50,10 +50,9 @@ CREATE TABLE products_orders (
   price FLOAT NOT NULL,
   PRIMARY KEY (product_id, order_id)
 );
------------------------
--- FINE STRUTTURA DB --
------------------------
-
+-- ------------------ --
+-- FINE STRUTTURA DB  --
+-- ------------------ --
 
 INSERT INTO users (email, name, surname) VALUES
 ("tasdhrease@mone.it", "three", "mone"),
