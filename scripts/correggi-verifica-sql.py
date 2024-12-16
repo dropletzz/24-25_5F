@@ -112,7 +112,7 @@ GROUP BY u.id;
 None, # non corretta automaticamente
 ]
 
-DEBUG = True
+DEBUG = False
 
 ################################
 # FINE PARTE DI CONFIGURAZIONE #
@@ -125,7 +125,6 @@ def log(x):
 
 import mariadb
 from openpyxl import load_workbook
-
 
 # connessione al db
 connection = mariadb.connect(
@@ -146,34 +145,31 @@ def compare_answers(correct, attempt):
     if attempt is None:
         return "A"
 
-    # run correct query
-    try:
-        cursor.execute(correct)
-    except:
-        log(f"ERROR RUNNING CORRECT QUERY:\n{correct}")
-        return "C"
-    try:
-        correct_res = cursor.fetchall()
-    except:
-        log(f"NO RESULT SET TO FETCH:\n{correct}")
-        return "CR"
+    def try_query(query, errcode):
+        try:
+            cursor.execute(query)
+        except:
+            log(f"ERROR RUNNING QUERY:\n{query}")
+            return (None, errcode)
+        try:
+            res = cursor.fetchall()
+        except:
+            log(f"ERROR FETCHING RESULTS:\n{query}")
+            return (None, f"{errcode}F")
+        return (res, None)
 
-    # run attempt query
-    try:
-        cursor.execute(attempt)
-    except:
-        log(f"ERROR RUNNING ATTEMPT QUERY:\n{attempt}")
-        return "A"
-    try:
-        res = cursor.fetchall()
-    except:
-        log(f"NO RESULT SET TO FETCH:\n{attempt}")
-        return "AR"
+    (cres, err) = try_query(correct, "C")
+    if err:
+        return err
 
-    if len(correct_res) != len(res):
+    (res, err) = try_query(attempt, "A")
+    if err:
+        return err
+
+    if len(cres) != len(res):
         return "L"
 
-    for (cr, r) in zip(correct_res, res):
+    for (cr, r) in zip(cres, res):
         if (cr != r):
             return "E"
 
@@ -219,6 +215,7 @@ for i in range(student_count):
     [ firstn, lastn ] = mail_to_name(student_mail)
     out.cell(row=2+i, column=1).value = lastn
     out.cell(row=2+i, column=2).value = firstn
+    print(f"Correggendo: {lastn} {firstn}")
 
     for j in range(len(ANSWERS)):
         student_answer = sheet.cell(row=2+i, column=3+j).value
@@ -226,5 +223,7 @@ for i in range(student_count):
         out.cell(row=2+i, column=3+j).value = res
 
 wb.save(FILE_NAME)
+
+print("Corretto tutto e aggiornato il file excel ;)")
 
 
