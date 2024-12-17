@@ -15,9 +15,9 @@
     $password = "";
     $dbname = "social";
 
-    // Create connection
+    // Creo Connessione
     $conn = new mysqli($servername, $username, $password, $dbname);
-    // Check connection
+    // Controllo Connessione
     if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
     }
