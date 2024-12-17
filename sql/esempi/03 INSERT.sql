@@ -32,3 +32,4 @@ INSERT INTO users_summary (user_id, order_count)
 SELECT users.id, COUNT(orders.id)
 FROM users LEFT JOIN orders ON users.id = orders.user_id;
 
+-- ciao
