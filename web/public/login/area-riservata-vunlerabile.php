@@ -12,13 +12,11 @@
     require_once '../../util/dbconn.php';
     $conn = getDbConnection("social");
 
-    $sql = "SELECT * FROM users WHERE email = ?";
+    // !!! Vulnerabile a SQL injection !!!
+    $email = $_POST["email"];
+    $sql = "SELECT * FROM users WHERE email = '{$email}';";
 
-    // Per evitare vulnerabilita' SQL injection
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $email); // "s" indica che $email e' una stringa
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         echo "Login effettuato con successo";
