@@ -1,4 +1,4 @@
-<!-- Modifica una COSA sul db -->
+<!-- Modifica un tweet sul db -->
 
 <?php
 ?>

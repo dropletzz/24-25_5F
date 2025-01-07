@@ -1,4 +1,4 @@
-<!-- Pagina HTML che visualizza una COSA -->
+<!-- Pagina HTML che visualizza un tweet -->
 
 <?php
 ?>

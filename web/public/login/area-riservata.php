@@ -9,7 +9,7 @@
 <body>
 
     <?php
-    require_once '../../util/dbconn.php';
+    require_once '../dbconn.php';
     $conn = getDbConnection("social");
 
     $sql = "SELECT * FROM users WHERE email = ?";
