@@ -1,7 +1,0 @@
-
-CREATE DATABASE IF NOT EXISTS crud;
-
-CREATE TABLE tweets (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    content TEXT
-);
