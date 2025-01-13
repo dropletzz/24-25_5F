@@ -46,9 +46,9 @@
                     </h3>
 
                     <div class="actions">
-                        <a href="/todo/edit.php?id=<?= $todo['id'] ?>">modifica</a>
+                        <a href="edit.php?id=<?= $todo['id'] ?>">modifica</a>
                         <span> | </span>
-                        <a href="/todo/actions/delete.php?id=<?= $todo['id'] ?>">elimina</a>
+                        <a href="actions/delete.php?id=<?= $todo['id'] ?>">elimina</a>
                     </div>
                 </div>
             <?php endwhile; ?>

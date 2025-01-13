@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <form action="/todo/actions/create.php" method="POST">
+    <form action="actions/create.php" method="POST">
         <label for="todo-title">Scrivi qualcosa:</label><br />
         <input id="todo-title" name="title" type="text"><br />
 

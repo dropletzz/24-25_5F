@@ -23,7 +23,7 @@
 </head>
 
 <body>
-    <form action="/todo/actions/update.php" method="POST">
+    <form action="actions/update.php" method="POST">
         <input id="todo-title" name="id" type="hidden" value="<?= $id ?>"><br />
 
         <label for="todo-title">Scrivi qualcosa:</label><br />

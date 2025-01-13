@@ -10,7 +10,7 @@
     $conn->close();
 
     // Dice al browser di caricare la pagina 'index.php'
-    header('Location: /todo/index.php');
+    header('Location: ../index.php');
 ?>
 
 <!-- Modifica il contenuto di un todo -->

@@ -9,7 +9,7 @@
     $conn->close();
 
     // Dice al browser di caricare la pagina 'index.php'
-    header('Location: /todo/index.php');
+    header('Location: ../index.php');
 ?>
 
 <!-- Cancella un todo dato il suo id -->
