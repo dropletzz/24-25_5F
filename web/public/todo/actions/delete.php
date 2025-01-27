@@ -1,5 +1,5 @@
 <?php
-    require_once '../dbconn.php';
+    require_once '../../dbconn.php';
     $id = $_GET['id'];
 
     $conn = getDbConnection('todolist');

@@ -12,7 +12,7 @@
     require_once '../dbconn.php';
     $conn = getDbConnection("social");
 
-    $sql = "SELECT * FROM users WHERE email = ?";
+    $sql = "SELECT * FROM users WHERE email = ? AND password = ?";
 
     // Per evitare vulnerabilita' SQL injection
     $stmt = $conn->prepare($sql);

@@ -1,5 +1,5 @@
 <?php
-    require_once '../dbconn.php';
+    require_once '../../dbconn.php';
     $id = $_POST['id'];
     $title = $_POST['title'];
 

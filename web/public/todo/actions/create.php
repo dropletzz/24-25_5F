@@ -1,5 +1,5 @@
 <?php
-    require_once '../dbconn.php';
+    require_once '../../dbconn.php';
     $title = $_POST['title'];
 
     $conn = getDbConnection('todolist');

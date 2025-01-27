@@ -1,5 +1,5 @@
 <?php
-    require_once 'dbconn.php';
+    require_once '../dbconn.php';
     $conn = getDbConnection('todolist');
     $result = $conn->query('SELECT * FROM todo');
     $conn->close();
@@ -52,6 +52,8 @@
                     </div>
                 </div>
             <?php endwhile; ?>
+        <?php else: ?>
+            <p>Non ci sono cose da fare</p>
         <?php endif; ?>
     </div>
 </body>
