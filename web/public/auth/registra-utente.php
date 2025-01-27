@@ -15,8 +15,6 @@ $stmt->execute();
 $result = $stmt->get_result();
 $conn->close();
 
-print($result);
-
 // Dice al browser di caricare la pagina 'index.php'
 header('Location: index.php');
 ?>
