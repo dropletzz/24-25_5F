@@ -13,6 +13,12 @@ $result = $stmt->get_result();
 $conn->close();
 
 $user = $result->fetch_assoc();
+if (!$user) {
+    // se nel db non esiste un utente con la mail specificata
+    // ricarico il form di login mostrando un errore
+    $msg = urlencode("Login non riuscito, riprova");
+    return header("Location: login.php?error=$msg");
+}
 // Confronto la password inserita con lo hash salvato sul database
 $ok = password_verify($password, $user['password_hash']);
 if ($ok) {

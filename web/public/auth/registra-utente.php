@@ -4,18 +4,31 @@ require_once '../dbconn.php';
 $email = $_POST['email'];
 $name = $_POST['name'];
 $surname = $_POST['surname'];
+$password = $_POST['password'];
+
+// TODO verificare che la password sia lunga almeno 8 caratteri
+// e contenga solo caratteri alfanumerici o trattini (- oppure _)
+
+// TODO verificare che l'email sia formattata correttamente
+
+
 // Calcolo l'hash della password inserita
-$hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+$hash = password_hash($password, PASSWORD_DEFAULT);
 
 $conn = getDbConnection('auth');
 $sql = "INSERT INTO users SET email=?, password_hash=?, name=?, surname=?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ssss", $email, $hash, $name, $surname);
-$stmt->execute();
-$result = $stmt->get_result();
-$conn->close();
+try {
+    $stmt->execute();
+    // se l'utente e' stato inserito nel db torno alla pagina principale
+    header('Location: index.php');
+}
+catch (Exception $e) {
+    // altrimenti ricarico il form di registrazione con un messaggio di errore
+    $msg = urlencode("Impossibile creare l'utente con i dati inseriti");
+    header("Location: registrazione.php?error=$msg");
+}
 
-// Dice al browser di caricare la pagina 'index.php'
-header('Location: index.php');
 ?>
 
