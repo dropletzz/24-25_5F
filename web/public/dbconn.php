@@ -1,6 +1,6 @@
 <?php
 function getDbConnection($dbname) {
-    $servername = 'database';
+    $servername = $_ENV['DB_HOST'] ?? 'localhost';
     $username = 'root';
     $password = '';
 
