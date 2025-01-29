@@ -13,7 +13,7 @@
     </div>
     <?php endif; ?>
 
-    <form action="controlla-credenziali.php" method="POST">
+    <form action="login-utente.php" method="POST">
         <label>Inserisci email</label><br />
         <input name="email" type="text"><br />
 
