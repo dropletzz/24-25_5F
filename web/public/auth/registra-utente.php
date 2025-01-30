@@ -7,7 +7,13 @@ $surname = $_POST['surname'];
 $password = $_POST['password'];
 
 // TODO verificare che la password sia lunga almeno 8 caratteri
-// e contenga solo caratteri alfanumerici o trattini (- oppure _)
+if (strlen($password) < 8) {
+    $msg = urlencode("La password deve avere almeno 8 caratteri");
+    header("Location: registrazione.php?error=$msg");
+    return;
+}
+
+// TODO verificare che la password contenga solo caratteri alfanumerici o trattini (- oppure _)
 
 // TODO verificare che l'email sia formattata correttamente
 
