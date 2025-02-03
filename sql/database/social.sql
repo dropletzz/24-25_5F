@@ -13,6 +13,7 @@ CREATE TABLE users (
     email VARCHAR(64) NOT NULL UNIQUE,
     first_name VARCHAR(64) NOT NULL,
     last_name VARCHAR(64) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     about_me TEXT
 );
 
@@ -112,7 +113,6 @@ INSERT INTO users (email, first_name, last_name, about_me) VALUES
 ('lily.ross@example.com', 'Lily', 'Ross', 'Psychologist.'),
 ('charlie.phillips@example.com', 'Charlie', 'Phillips', 'Guitar teacher.'),
 ('amy.sullivan@example.com', 'Amy', 'Sullivan', 'Florist.');
-
 
 -- Inserimento di 150 post
 INSERT INTO posts (user_id, image_url, description) VALUES
@@ -655,3 +655,17 @@ INSERT INTO comment_likes (user_id, comment_id, created_at) VALUES
 (9, 56, NOW()),
 (10, 57, NOW());
 
+
+-- Assegna casualmente date di registrazione utenti
+UPDATE users
+SET created_at = FROM_UNIXTIME(RAND() * (1738537200 - 1643842800 + 1) + 1643842800);
+
+-- Assegna casualmente date di creazione post
+UPDATE posts
+SET created_at = FROM_UNIXTIME(RAND() * (1738537200 - 1643842800 + 1) + 1643842800)
+    updated_at = created_at;
+
+-- Assegna casualmente date di creazione commenti
+UPDATE comments
+SET created_at = FROM_UNIXTIME(RAND() * (1738537200 - 1643842800 + 1) + 1643842800)
+    updated_at = created_at;
