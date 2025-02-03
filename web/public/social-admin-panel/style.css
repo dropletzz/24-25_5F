@@ -1,0 +1,187 @@
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #0061b6;
+  margin: 0px;
+}
+
+nav {
+  margin: 0px;
+  padding: 10px;
+  font-size: 24px;
+  background-color: #013767;
+  color: #d1d1d1;
+}
+nav a {
+  color: #FFD740;
+  text-decoration: none;
+}
+nav a:visited {
+  color: #FFD740;
+}
+
+.titolo {
+  text-align: center;
+  color: #fff;
+  margin-top: 20px;
+}
+
+.contenitore {
+  position: absolute;
+  width: 700px;
+  transform: translateX(-50%);
+  left: 50%;
+}
+
+.pannello {
+  position: relative;
+  margin: 10px;
+  margin-bottom: 30px;
+  padding: 15px;
+  border: 4px solid #FFD740;
+  border-radius: 15px;
+  background-color: #013767;
+}
+
+hr {
+  color: #FFD740;
+}
+
+h2 {
+  font-size: 18px;
+  color: #fff;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 5px;
+  background-color: #BFEFFF;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.post {
+  position: relative;
+  background-color: #BFEFFF;
+  border-radius: 5px;
+  padding: 10px;
+  padding-bottom: 25px;
+}
+.post .info {
+  font-style: italic;
+  font-size: 14px;
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+  color: #404040;
+}
+.post .info a {
+  color: #004e92;
+  text-decoration: none;
+}
+.post .info a:visited {
+  color: #004e92;
+  text-decoration: none;
+}
+.post .info a:hover {
+  color: #c9a82f;
+  text-decoration: none;
+}
+.post .likes {
+  position: absolute;
+  left: 10px;
+  bottom: 5px;
+}
+.post .likes:before {
+  content: '♥';
+  color: red;
+  font-size: 20px;
+}
+
+.totali {
+  display: flex;
+  justify-content: space-around;
+  font-size: 18px;
+  color: #fff;
+}
+.totali div {
+  text-align: center;
+}
+.totali div span {
+  text-align: center;
+  font-size: 24px;
+  color: #FFD740;
+}
+
+.utente {
+  position: relative;
+  background-color: #BFEFFF;
+  border-radius: 5px;
+  padding: 10px;
+  padding-bottom: 25px;
+}
+.utente .data-registrazione {
+  font-style: italic;
+  font-size: 14px;
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+  color: #404040;
+}
+.utente .link {
+  font-size: 14px;
+  position: absolute;
+  bottom: 5px;
+  left: 10px;
+}
+.utente .link a {
+  color: #004e92;
+  text-decoration: none;
+}
+.utente .link a:visited {
+  color: #004e92;
+  text-decoration: none;
+}
+.utente .link a:hover {
+  color: #c9a82f;
+  text-decoration: none;
+}
+
+.barra-di-ricerca {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  height: 40px;
+}
+
+.barra-di-ricerca input {
+  flex: 1;
+  font-size: 20px;
+}
+.barra-di-ricerca button {
+  font-size: 16px;
+  background-color: #d1d1d1;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+table {
+  width: 100%;
+}
+table th {
+  background-color: #98d2ff;
+}
+table tr {
+  text-align: center;
+}
+table tr:nth-child(even) {
+  background-color: #e6e6e6;
+}
+table tr:nth-child(odd) {
+  background-color: #c9e8ff;
+}
