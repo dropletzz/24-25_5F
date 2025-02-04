@@ -662,10 +662,10 @@ SET created_at = FROM_UNIXTIME(RAND() * (1738537200 - 1643842800 + 1) + 16438428
 
 -- Assegna casualmente date di creazione post
 UPDATE posts
-SET created_at = FROM_UNIXTIME(RAND() * (1738537200 - 1643842800 + 1) + 1643842800)
+SET created_at = FROM_UNIXTIME(RAND() * (1738537200 - 1643842800 + 1) + 1643842800),
     updated_at = created_at;
 
 -- Assegna casualmente date di creazione commenti
 UPDATE comments
-SET created_at = FROM_UNIXTIME(RAND() * (1738537200 - 1643842800 + 1) + 1643842800)
+SET created_at = FROM_UNIXTIME(RAND() * (1738537200 - 1643842800 + 1) + 1643842800),
     updated_at = created_at;
