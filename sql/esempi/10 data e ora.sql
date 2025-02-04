@@ -39,5 +39,5 @@ FROM eventi;
 
 -- DATEDIFF(d1, d2) restituisce la differenza tra
 -- d1 e d2 calcolata in giorni
-SELECT name, DATEDIFF(date, NOW()) AS diff
+SELECT name, DATEDIFF(NOW(), date) AS diff
 FROM eventi;
