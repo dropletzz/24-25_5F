@@ -1,3 +1,23 @@
+<?php
+require '../dbconn.php';
+
+$conn = getDbConnection('social');
+
+// Totale utenti
+$result = $conn->query("SELECT COUNT(*) AS conteggio FROM users");
+$row = $result->fetch_assoc(); // tiro fuori la prima riga dal risultato della query
+$tot_utenti = $row['conteggio'];
+
+// Totale utenti registrati nell'ultima settimana
+$result = $conn->query("SELECT COUNT(*) AS conteggio FROM users WHERE DATEDIFF(NOW(), created_at) <= 7");
+$row = $result->fetch_assoc(); // tiro fuori la prima riga dal risultato della query
+$tot_utent_sett = $row['conteggio'];
+
+// Ultimi 5 utenti registrati
+$utenti = $conn->query("SELECT * FROM users ORDER BY created_at DESC LIMIT 5");
+
+?>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -17,27 +37,29 @@
             <div class="totali">
                 <div>
                     Totale utenti:<br/>
-                    <span>77</span>
+                    <span><?= $tot_utenti ?></span>
                 </div>
                 <div>
                     Utenti registrati nell'ultima settimana:<br/>
-                    <span>10</span>
+                    <span><?= $tot_utenti_sett ?></span>
                 </div>
             </div>
             <hr>
             <h2>Ultimi 5 utenti iscritti:</h2>
             <ul>
+                <?php while ($u = $utenti->fetch_assoc()): ?>
                 <li class="utente">
                     <div class="info">
-                        Tizio Caio (tiziocaio@libero.it)
+                        <?= $u['first_name'] ?> <?= $u['last_name'] ?> (<?= $u['email'] ?>)
                     </div>
                     <div class="data-registrazione">
-                        registrato il 12/11/2024
+                        registrato il <?= $u['created_at'] ?>
                     </div>
                     <div class="link">
-                        <a href="utente.php?id=37">dettagli</a>
+                        <a href="utente.php?id=<?= $u['id'] ?>">dettagli</a>
                     </div>
                 </li>
+                <?php endwhile; ?>
             </ul>
         </div>
 

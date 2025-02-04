@@ -11,7 +11,7 @@
         <a href="gestione-utenti.php">Gestione utenti</a>
     </nav>
 
-    <h1 class="titolo">Pagina utente</h1>
+    <h1 class="titolo">Pagina utente <?= $_GET['id'] ?></h1>
     
     <div class="contenitore">
         <!-- Visualizzare le seguenti info: -->
