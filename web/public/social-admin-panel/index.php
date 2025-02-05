@@ -11,7 +11,7 @@ $tot_utenti = $row['conteggio'];
 // Totale utenti registrati nell'ultima settimana
 $result = $conn->query("SELECT COUNT(*) AS conteggio FROM users WHERE DATEDIFF(NOW(), created_at) <= 7");
 $row = $result->fetch_assoc(); // tiro fuori la prima riga dal risultato della query
-$tot_utent_sett = $row['conteggio'];
+$tot_utenti_sett = $row['conteggio'];
 
 // Ultimi 5 utenti registrati
 $utenti = $conn->query("SELECT * FROM users ORDER BY created_at DESC LIMIT 5");

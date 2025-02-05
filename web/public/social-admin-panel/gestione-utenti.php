@@ -1,3 +1,26 @@
+<?php
+require '../dbconn.php';
+
+$conn = getDbConnection('social');
+
+
+if (isset($_GET['search'])) {
+    $search = "%".$_GET['search']."%";
+    $statement = $conn->prepare("
+        SELECT * FROM users
+        WHERE first_name LIKE ? OR last_name LIKE ? OR email LIKE ?
+    ");
+    $statement->bind_param("sss", $search, $search, $search);
+    $statement->execute();
+    $utenti = $statement->get_result();
+}
+else {   
+    // Totale utenti
+    $utenti = $conn->query("SELECT * FROM users");
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -27,27 +50,15 @@
                 <th>Data di registrazione</th>
                 <th></th>
             </tr>
-            <tr>
-                <td>Mario</td>
-                <td>Rossi</td>
-                <td>rmario@inwind.it</td>
-                <td>23/08/2023</td>
-                <td><a href="utente.php?id=37">dettagli</a></th>
-            </tr>
-            <tr>
-                <td>Mario</td>
-                <td>Rossi</td>
-                <td>rmario@inwind.it</td>
-                <td>23/08/2023</td>
-                <td><a href="utente.php?id=37">dettagli</a></th>
-            </tr>
-            <tr>
-                <td>Mario</td>
-                <td>Rossi</td>
-                <td>rmario@inwind.it</td>
-                <td>23/08/2023</td>
-                <td><a href="utente.php?id=37">dettagli</a></th>
-            </tr>
+            <?php while ($u = $utenti->fetch_assoc()): ?>
+                <tr>
+                    <td><?= $u['first_name'] ?></td>
+                    <td><?= $u['last_name'] ?></td>
+                    <td><?= $u['email'] ?></td>
+                    <td><?= $u['created_at'] ?></td>
+                    <td><a href="utente.php?id=<?= $u['id'] ?>">dettagli</a></th>
+                </tr>
+            <?php endwhile; ?> 
         </table>
     </div>
     </div>
