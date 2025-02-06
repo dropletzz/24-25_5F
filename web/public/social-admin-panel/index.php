@@ -16,6 +16,15 @@ $tot_utenti_sett = $row['conteggio'];
 // Ultimi 5 utenti registrati
 $utenti = $conn->query("SELECT * FROM users ORDER BY created_at DESC LIMIT 5");
 
+// 10 post piu' popolari (con piu' like)
+$post_popolari = $conn->query("
+    SELECT users.id AS user_id, users.first_name, users.last_name, posts.created_at, posts.description,             COUNT(*) AS likes FROM posts
+    JOIN post_likes ON posts.id = post_likes.post_id
+    JOIN users ON users.id = posts.user_id
+    GROUP BY posts.id
+    ORDER BY likes DESC
+    LIMIT 10;
+");
 ?>
 
 <!DOCTYPE html>
@@ -81,18 +90,20 @@ $utenti = $conn->query("SELECT * FROM users ORDER BY created_at DESC LIMIT 5");
             <hr>
             <h2>I 10 post più popolari:</h2>
             <ul>
+                <?php while ($p = $post_popolari->fetch_assoc()): ?>
                 <li class="post">
                     <div class="content">
-                        blablbasl llablal lbllas del post
+                        <?= $p['description'] ?>
                     </div>
                     <div class="likes">
-                         49
+                        <?= $p['likes'] ?>
                     </div>
                     <div class="info">
-                        pubblicato il 01/02/2025
-                        da <a href="utente.php?id=37">Mario Rossi</a>
+                        pubblicato il <?= $p['created_at'] ?>
+                        da <a href="utente.php?id=<?= $p['user_id'] ?>"><?= $p['first_name'] . " " . $p['last_name'] ?></a>
                     </div>
                 </li>
+                <?php endwhile; ?>
             </ul>
         </div>
 
