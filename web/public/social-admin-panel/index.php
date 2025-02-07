@@ -1,17 +1,10 @@
 <?php
-require '../dbconn.php';
 
-$conn = getDbConnection('social');
+require_once './model.php';
 
-// Totale utenti
-$result = $conn->query("SELECT COUNT(*) AS conteggio FROM users");
-$row = $result->fetch_assoc(); // tiro fuori la prima riga dal risultato della query
-$tot_utenti = $row['conteggio'];
+$totali = getTotali();
 
-// Totale utenti registrati nell'ultima settimana
-$result = $conn->query("SELECT COUNT(*) AS conteggio FROM users WHERE DATEDIFF(NOW(), created_at) <= 7");
-$row = $result->fetch_assoc(); // tiro fuori la prima riga dal risultato della query
-$tot_utenti_sett = $row['conteggio'];
+
 
 // Ultimi 5 utenti registrati
 $utenti = $conn->query("SELECT * FROM users ORDER BY created_at DESC LIMIT 5");
@@ -25,6 +18,11 @@ $post_popolari = $conn->query("
     ORDER BY likes DESC
     LIMIT 10;
 ");
+
+function formatDate($date_str) {
+    $time = strtotime($date_str);
+    return date('d-m-Y', $time);
+}
 ?>
 
 <!DOCTYPE html>
@@ -62,7 +60,8 @@ $post_popolari = $conn->query("
                         <?= $u['first_name'] ?> <?= $u['last_name'] ?> (<?= $u['email'] ?>)
                     </div>
                     <div class="data-registrazione">
-                        registrato il <?= $u['created_at'] ?>
+
+                        registrato il <?= formatDate($u['created_at']) ?>
                     </div>
                     <div class="link">
                         <a href="utente.php?id=<?= $u['id'] ?>">dettagli</a>
@@ -99,7 +98,7 @@ $post_popolari = $conn->query("
                         <?= $p['likes'] ?>
                     </div>
                     <div class="info">
-                        pubblicato il <?= $p['created_at'] ?>
+                        pubblicato il <?= formatDate($p['created_at']) ?>
                         da <a href="utente.php?id=<?= $p['user_id'] ?>"><?= $p['first_name'] . " " . $p['last_name'] ?></a>
                     </div>
                 </li>
