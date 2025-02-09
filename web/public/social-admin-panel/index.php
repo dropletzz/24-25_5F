@@ -1,23 +1,9 @@
 <?php
-
 require_once './model.php';
 
 $totali = getTotali();
-
-
-
-// Ultimi 5 utenti registrati
-$utenti = $conn->query("SELECT * FROM users ORDER BY created_at DESC LIMIT 5");
-
-// 10 post piu' popolari (con piu' like)
-$post_popolari = $conn->query("
-    SELECT users.id AS user_id, users.first_name, users.last_name, posts.created_at, posts.description,             COUNT(*) AS likes FROM posts
-    JOIN post_likes ON posts.id = post_likes.post_id
-    JOIN users ON users.id = posts.user_id
-    GROUP BY posts.id
-    ORDER BY likes DESC
-    LIMIT 10;
-");
+$utenti = getUltimiUtentiRegistrati();
+$post_popolari = getPostPopolari();
 
 function formatDate($date_str) {
     $time = strtotime($date_str);
@@ -44,11 +30,11 @@ function formatDate($date_str) {
             <div class="totali">
                 <div>
                     Totale utenti:<br/>
-                    <span><?= $tot_utenti ?></span>
+                    <span><?= $totali['utenti']?></span>
                 </div>
                 <div>
                     Utenti registrati nell'ultima settimana:<br/>
-                    <span><?= $tot_utenti_sett ?></span>
+                    <span><?= $totali['utenti_sett'] ?></span>
                 </div>
             </div>
             <hr>

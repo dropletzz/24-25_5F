@@ -5,17 +5,8 @@ if (!isset($_GET['id'])) {
     return;
 }
 
-require_once '../dbconn.php';
-$conn = getDbConnection('social');
-
-$user_id = $_GET['id'];
-$statement = $conn->prepare("SELECT * FROM users WHERE id = ?");
-$statement->bind_param("i", $user_id);
-$statement->execute();
-
-$result = $statement->get_result();
-$user = $result->fetch_assoc();
-
+require_once './model.php';
+$user = getUtente($_GET['id']);
 ?>
 
 <!DOCTYPE html>

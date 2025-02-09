@@ -1,24 +1,13 @@
 <?php
-require '../dbconn.php';
-
-$conn = getDbConnection('social');
-
+require './model.php';
 
 if (isset($_GET['search'])) {
-    $search = "%".$_GET['search']."%";
-    $statement = $conn->prepare("
-        SELECT * FROM users
-        WHERE first_name LIKE ? OR last_name LIKE ? OR email LIKE ?
-    ");
-    $statement->bind_param("sss", $search, $search, $search);
-    $statement->execute();
-    $utenti = $statement->get_result();
+    $utenti = ricercaUtenti($_GET['search']);
 }
 else {   
     // Totale utenti
-    $utenti = $conn->query("SELECT * FROM users");
+    $utenti = getUtenti();
 }
-
 ?>
 
 <!DOCTYPE html>
