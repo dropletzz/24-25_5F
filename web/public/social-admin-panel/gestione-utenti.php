@@ -1,5 +1,5 @@
 <?php
-require './model.php';
+require_once './model.php';
 
 if (isset($_GET['search'])) {
     $utenti = ricercaUtenti($_GET['search']);
