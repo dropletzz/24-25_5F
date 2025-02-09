@@ -1,7 +1,16 @@
 
+:root {
+  --col-main: #0061b6;
+  --col-main-dark: #002b53;
+  --col-main-light: #BFEFFF;
+  --col-alt: #FFD740;
+  --col-light-gray: #DDD;
+  --col-gray: #373737;
+}
+
 body {
   font-family: Arial, sans-serif;
-  background-color: #0061b6;
+  background-color: var(--col-main);
   margin: 0px;
 }
 
@@ -9,15 +18,15 @@ nav {
   margin: 0px;
   padding: 10px;
   font-size: 24px;
-  background-color: #013767;
-  color: #d1d1d1;
+  background-color: var(--col-main-dark);
+  color: var(--col-light-gray);
 }
 nav a {
-  color: #FFD740;
+  color: var(--col-main);
   text-decoration: none;
 }
 nav a:visited {
-  color: #FFD740;
+  color: var(--col-alt);
 }
 
 .titolo {
@@ -38,18 +47,18 @@ nav a:visited {
   margin: 10px;
   margin-bottom: 30px;
   padding: 15px;
-  border: 4px solid #FFD740;
   border-radius: 15px;
-  background-color: #013767;
+  border: 4px solid var(--col-alt);
+  background-color: var(--col-main-dark);
 }
 
 hr {
-  color: #FFD740;
+  color: var(--col-alt);
 }
 
 h2 {
   font-size: 18px;
-  color: #fff;
+  color: var(--col-alt);
 }
 
 ul {
@@ -60,14 +69,14 @@ ul {
 
 li {
   margin-bottom: 5px;
-  background-color: #BFEFFF;
+  background-color: var(--col-main-light);
   border-radius: 5px;
   padding: 10px;
 }
 
 .post {
   position: relative;
-  background-color: #BFEFFF;
+  background-color: var(--col-main-light);
   border-radius: 5px;
   padding: 10px;
   padding-bottom: 25px;
@@ -78,18 +87,18 @@ li {
   position: absolute;
   bottom: 5px;
   right: 10px;
-  color: #404040;
+  color: var(--col-gray);
 }
 .post .info a {
-  color: #004e92;
+  color: var(--col-main);
   text-decoration: none;
 }
 .post .info a:visited {
-  color: #004e92;
+  color: var(--col-main);
   text-decoration: none;
 }
 .post .info a:hover {
-  color: #c9a82f;
+  color: var(--col-alt);
   text-decoration: none;
 }
 .post .likes {
@@ -107,7 +116,7 @@ li {
   display: flex;
   justify-content: space-around;
   font-size: 18px;
-  color: #fff;
+  color: var(--col-alt);
 }
 .totali div {
   text-align: center;
@@ -115,12 +124,13 @@ li {
 .totali div span {
   text-align: center;
   font-size: 24px;
-  color: #FFD740;
+  font-weight: 700;
+  color: var(--col-main-light);
 }
 
 .utente {
   position: relative;
-  background-color: #BFEFFF;
+  background-color: var(--col-main-light);
   border-radius: 5px;
   padding: 10px;
   padding-bottom: 25px;
@@ -131,7 +141,7 @@ li {
   position: absolute;
   bottom: 5px;
   right: 10px;
-  color: #404040;
+  color: var(--col-gray);
 }
 .utente .link {
   font-size: 14px;
@@ -140,15 +150,15 @@ li {
   left: 10px;
 }
 .utente .link a {
-  color: #004e92;
+  color: var(--col-main);
   text-decoration: none;
 }
 .utente .link a:visited {
-  color: #004e92;
+  color: var(--col-main);
   text-decoration: none;
 }
 .utente .link a:hover {
-  color: #c9a82f;
+  color: var(--col-alt);
   text-decoration: none;
 }
 
@@ -165,7 +175,7 @@ li {
 }
 .barra-di-ricerca button {
   font-size: 16px;
-  background-color: #d1d1d1;
+  background-color: var(--col-main-light);
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -174,14 +184,18 @@ table {
   width: 100%;
 }
 table th {
-  background-color: #98d2ff;
+  background-color: var(--col-main-dark);
+  color: var(--col-alt);
+  font-weight: bold;
 }
 table tr {
   text-align: center;
 }
 table tr:nth-child(even) {
-  background-color: #e6e6e6;
+  background-color: var(--col-main-light);
+  color: var(--col-main-dark);
 }
 table tr:nth-child(odd) {
-  background-color: #c9e8ff;
+  background-color: var(--col-light-gray);
+  color: var(--col-main-dark);
 }
