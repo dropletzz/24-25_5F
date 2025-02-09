@@ -42,6 +42,7 @@ nav a:visited {
   left: 50%;
 }
 
+/* BEGIN pannello */
 .pannello {
   position: relative;
   margin: 10px;
@@ -51,117 +52,100 @@ nav a:visited {
   border: 4px solid var(--col-alt);
   background-color: var(--col-main-dark);
 }
-
-hr {
+.pannello hr {
   color: var(--col-alt);
 }
-
-h2 {
+.pannello h2 {
   font-size: 18px;
   color: var(--col-alt);
 }
 
-ul {
+.pannello ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-li {
+.pannello ul li {
   margin-bottom: 5px;
   background-color: var(--col-main-light);
   border-radius: 5px;
   padding: 10px;
 }
 
-.post {
+/* BEGIN totali */
+.pannello .totali {
+  display: flex;
+  justify-content: space-around;
+  font-size: 18px;
+  color: var(--col-alt);
+}
+.pannello .totali div {
+  text-align: center;
+}
+.pannello .totali div span {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--col-main-light);
+}
+/* END totali */
+
+/* BEGIN box */
+.pannello .box {
   position: relative;
   background-color: var(--col-main-light);
   border-radius: 5px;
   padding: 10px;
   padding-bottom: 25px;
 }
-.post .info {
-  font-style: italic;
-  font-size: 14px;
+.pannello .box .basso-dx {
   position: absolute;
   bottom: 5px;
   right: 10px;
   color: var(--col-gray);
+  font-size: 14px;
 }
-.post .info a {
+.pannello .box .basso-sx {
+  position: absolute;
+  bottom: 5px;
+  left: 10px;
+  font-size: 14px;
+}
+.pannello .box a {
   color: var(--col-main);
   text-decoration: none;
 }
-.post .info a:visited {
+.pannello .box a:visited {
   color: var(--col-main);
   text-decoration: none;
 }
-.post .info a:hover {
+.pannello .box a:hover {
   color: var(--col-alt);
   text-decoration: none;
 }
-.post .likes {
-  position: absolute;
-  left: 10px;
-  bottom: 5px;
+/* END box */
+/* END pannello */
+
+
+
+/* BEGIN index.php */
+.post .info {
+  font-style: italic;
 }
+
 .post .likes:before {
   content: '♥';
   color: red;
   font-size: 20px;
 }
 
-.totali {
-  display: flex;
-  justify-content: space-around;
-  font-size: 18px;
-  color: var(--col-alt);
-}
-.totali div {
-  text-align: center;
-}
-.totali div span {
-  text-align: center;
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--col-main-light);
-}
-
-.utente {
-  position: relative;
-  background-color: var(--col-main-light);
-  border-radius: 5px;
-  padding: 10px;
-  padding-bottom: 25px;
-}
 .utente .data-registrazione {
   font-style: italic;
-  font-size: 14px;
-  position: absolute;
-  bottom: 5px;
-  right: 10px;
-  color: var(--col-gray);
 }
-.utente .link {
-  font-size: 14px;
-  position: absolute;
-  bottom: 5px;
-  left: 10px;
-}
-.utente .link a {
-  color: var(--col-main);
-  text-decoration: none;
-}
-.utente .link a:visited {
-  color: var(--col-main);
-  text-decoration: none;
-}
-.utente .link a:hover {
-  color: var(--col-alt);
-  text-decoration: none;
-}
+/* END index.php */
 
+/* BEGIN utenti.php */
 .barra-di-ricerca {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -199,3 +183,4 @@ table tr:nth-child(odd) {
   background-color: var(--col-light-gray);
   color: var(--col-main-dark);
 }
+/* END utenti.php */

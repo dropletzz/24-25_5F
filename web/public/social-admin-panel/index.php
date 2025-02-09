@@ -41,15 +41,14 @@ function formatDate($date_str) {
             <h2>Ultimi 5 utenti iscritti:</h2>
             <ul>
                 <?php while ($u = $utenti->fetch_assoc()): ?>
-                <li class="utente">
-                    <div class="info">
+                <li class="utente box">
+                    <div class="contenuto">
                         <?= $u['first_name'] ?> <?= $u['last_name'] ?> (<?= $u['email'] ?>)
                     </div>
-                    <div class="data-registrazione">
-
+                    <div class="basso-dx data-registrazione">
                         registrato il <?= formatDate($u['created_at']) ?>
                     </div>
-                    <div class="link">
+                    <div class="basso-sx link">
                         <a href="utente.php?id=<?= $u['id'] ?>">dettagli</a>
                     </div>
                 </li>
@@ -76,14 +75,14 @@ function formatDate($date_str) {
             <h2>I 10 post più popolari:</h2>
             <ul>
                 <?php while ($p = $post_popolari->fetch_assoc()): ?>
-                <li class="post">
-                    <div class="content">
+                <li class="post box">
+                    <div class="contenuto">
                         <?= $p['description'] ?>
                     </div>
-                    <div class="likes">
+                    <div class="likes basso-sx">
                         <?= $p['likes'] ?>
                     </div>
-                    <div class="info">
+                    <div class="info basso-dx">
                         pubblicato il <?= formatDate($p['created_at']) ?>
                         da <a href="utente.php?id=<?= $p['user_id'] ?>"><?= $p['first_name'] . " " . $p['last_name'] ?></a>
                     </div>
