@@ -15,7 +15,7 @@ function formatDate($date_str) {
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Pannello Amministrativo</title>
+    <title>Pannello amministrativo social</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,7 +24,7 @@ function formatDate($date_str) {
         <a href="gestione-utenti.php">Gestione utenti</a>
     </nav>
     <div class="contenitore">
-        <h1 class="titolo">Pannello amministrativo</h1>
+        <h1 class="titolo">Pannello amministrativo social</h1>
 
         <div class="utenti pannello">
             <div class="totali">

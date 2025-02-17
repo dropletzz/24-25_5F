@@ -45,7 +45,7 @@ else {
                     <td><?= $u['last_name'] ?></td>
                     <td><?= $u['email'] ?></td>
                     <td><?= $u['created_at'] ?></td>
-                    <td><a href="utente.php?id=<?= $u['id'] ?>">dettagli</a></th>
+                    <td><a href="utente.php?id=<?= $u['id'] ?>">dettagli</a></td>
                 </tr>
             <?php endwhile; ?> 
         </table>

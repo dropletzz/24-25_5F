@@ -22,7 +22,7 @@ nav {
   color: var(--col-light-gray);
 }
 nav a {
-  color: var(--col-main);
+  color: var(--col-alt);
   text-decoration: none;
 }
 nav a:visited {
