@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users (
   id INT PRIMARY KEY AUTO_INCREMENT,
   email VARCHAR(64) NOT NULL UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   name VARCHAR(64) NOT NULL,
   surname VARCHAR(64) NOT NULL
 );
@@ -194,3 +195,8 @@ INSERT INTO users (email, name, surname) VALUES
 ("donald@us.gov", "Donald", "Trap"),
 ("dario.amodei@anthropic.org", "Dario", "Amodei");
 
+
+UPDATE users
+SET created_at = FROM_UNIXTIME(RAND() * (1739227200 - 1713842800 + 1) + 1713842800);
+UPDATE orders
+SET created_at = FROM_UNIXTIME(RAND() * (1739227200 - 1713842800 + 1) + 1713842800);
