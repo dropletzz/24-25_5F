@@ -143,9 +143,8 @@ INSERT INTO users (email, name, surname) VALUES
 ("Totti@orrina.it", "Totti", "orrina")
 ;
 
-DELIMITER $$
 
-DROP PROCEDURE IF EXISTS RandomOrders$$
+DROP PROCEDURE IF EXISTS RandomOrders;
 CREATE PROCEDURE RandomOrders()
 BEGIN
     DECLARE i INT DEFAULT 1;
@@ -164,15 +163,11 @@ BEGIN
 
         SET i = i + 1;
     END WHILE;
-END$$
-
-DELIMITER ;
+END;
 
 CALL RandomOrders();
 
-DELIMITER $$
-
-DROP PROCEDURE IF EXISTS RandomProductsOrders$$
+DROP PROCEDURE IF EXISTS RandomProductsOrders;
 CREATE PROCEDURE RandomProductsOrders()
 BEGIN
     DECLARE i INT DEFAULT 1;
@@ -202,13 +197,9 @@ BEGIN
 
         SET i = i + 1;
     END WHILE;
-END$$
-
-DELIMITER ;
+END;
 
 CALL RandomProductsOrders();
-
-
 
 -- tutti gli ordini sono di quattro mesi fa
 UPDATE orders SET created_at = NOW() - INTERVAL 120 DAY;
