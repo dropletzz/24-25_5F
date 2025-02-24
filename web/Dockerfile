@@ -1,5 +1,7 @@
 FROM php:8.4.4-apache-bullseye
 
+
+RUN a2enmod rewrite
 RUN mkdir -p /var/lib/php/sessions
 RUN chown -R www-data:www-data /var/lib/php/sessions
 RUN echo "session.save_path = /var/lib/php/sessions" >> /usr/local/etc/php/conf.d/session.ini
