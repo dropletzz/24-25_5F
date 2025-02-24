@@ -1,0 +1,48 @@
+
+<html>
+    <head>
+        <style>
+            #gatto {
+                width: 500px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="salva-gatti">
+            <h1>Gatti per tutti</h1>
+            <button onclick="getRandomCat()">Genera un gatto random</button>
+            <button onclick="saveCat()">Salva il gatto</button>
+            <br/><br/>
+            <img id="gatto" src="" alt="">
+
+            <h2>Lista dei gatti salvati</h2>
+            <p>TODO visualizzare le foto di tutti i gatti salvati</p>
+        </div>
+
+
+        <script>
+            async function getRandomCat() {
+                const url = "https://cataas.com/cat?json=true";
+                
+                try {
+                    // faccio una richiesta http GET
+                    const response = await fetch(url);
+                    // faccio il parsing della risposta come JSON
+                    const catData = await response.json();
+                    // costruisco l'URL dell'immagine e la inserisco nella pagina
+                    const imageUrl = "https://cataas.com/cat/" + catData.id;
+                    const img = document.getElementById("gatto");
+                    img.src = imageUrl;
+                } catch (error) {
+                    console.log("Error fetching cat", error.message)
+                }
+            }
+
+            function saveCat() {
+            }
+
+            getRandomCat()
+        </script>
+    </body>
+</html>
