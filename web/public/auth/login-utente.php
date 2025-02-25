@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../dbconn.php';
 
 $email = $_POST['email'];
@@ -22,10 +23,12 @@ if (!$user) {
 // Confronto la password inserita con lo hash salvato sul database
 $ok = password_verify($password, $user['password_hash']);
 if ($ok) {
-    header('Location: index.php?autenticato=1');
+    $_SESSION['email'] = $email;
+    header('Location: index.php');
 }
 else {
-    header('Location: index.php');
+    $msg = urlencode("Login non riuscito, riprova");
+    header("Location: index.php?error=$msg");
 }
 ?>
 
