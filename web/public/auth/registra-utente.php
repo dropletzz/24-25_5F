@@ -13,9 +13,21 @@ if (strlen($password) < 8) {
     return;
 }
 
-// TODO verificare che la password contenga solo caratteri alfanumerici o trattini (- oppure _)
+// verificare che la password contenga solo caratteri alfanumerici o trattini (- o _)
+if (!preg_match("/^[a-zA-Z0-9\-\_]+$/", $password)) {
+    $msg = urlencode("La password puo' contenere solo lettere, numeri o trattini");
+    header("Location: registrazione.php?error=$msg");
+    return;
+}
 
-// TODO verificare che l'email sia formattata correttamente
+// verificare che l'email sia formattata correttamente
+$email_regex = "/^[^@]+@[^@]+\.[^@]+$/";
+// la regex di una mail e' piu' complicata di cosi' https://emailregex.com/
+if (!preg_match($email_regex, $email)) {
+    $msg = urlencode("Email non formattata correttamente");
+    header("Location: registrazione.php?error=$msg");
+    return;
+}
 
 
 // Calcolo l'hash della password inserita
