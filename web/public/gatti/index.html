@@ -17,7 +17,8 @@
             <img id="gatto" src="" alt="">
 
             <h2>Lista dei gatti salvati</h2>
-            <p>TODO visualizzare le foto di tutti i gatti salvati</p>
+            <div id="gatti-salvati">
+            </div>
         </div>
 
 
@@ -40,9 +41,39 @@
             }
 
             function saveCat() {
+                const img = document.getElementById("gatto");
+                const imageUrl = img.src;
+
+                const gatti = document.getElementById("gatti-salvati");
+                const nuovaImmagine = document.createElement("img");
+                nuovaImmagine.src = imageUrl;
+                gatti.appendChild(nuovaImmagine);
+
+                let gattiSalvati = localStorage.getItem("gatti");
+                if (!gattiSalvati) {
+                    gattiSalvati = [];
+                }
+                else {
+                    gattiSalvati = JSON.parse(gattiSalvati);
+                }
+                gattiSalvati.push(imageUrl);
+                localStorage.setItem("gatti", JSON.stringify(gattiSalvati));
             }
 
-            getRandomCat()
+            function recuperaGattiSalvati() {
+                let gattiSalvati = JSON.parse(localStorage.getItem("gatti"));
+                console.log(gattiSalvati);
+                const gatti = document.getElementById("gatti-salvati");
+                gattiSalvati.forEach(urlImmagine => {
+                    const nuovaImmagine = document.createElement("img");
+                    nuovaImmagine.src = urlImmagine;
+                    gatti.appendChild(nuovaImmagine);
+                })
+            }
+
+            recuperaGattiSalvati();
+            // localStorage.setItem("gatti", "[]")
+            getRandomCat();
         </script>
     </body>
 </html>
