@@ -2,28 +2,65 @@
 <html>
     <head>
         <style>
+            .gatto-random {
+                text-align: center;
+            }
+
             #gatto {
-                width: 500px;
+                width: 350px;
+            }
+
+            #preferiti {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+
+            #preferiti img {
+                height: 200px;
+                margin: 15px;
+            }
+
+            .preferiti-titolo .button {
+                float: right;
+            }
+
+            .button {
+                background-color: rebeccapurple;
+                color: aliceblue;
+                font-size: 18px;
+                padding: 6px;
+                border-radius: 3px;
+                cursor: pointer;
             }
         </style>
     </head>
 
     <body>
-        <div class="salva-gatti">
-            <h1>Gatti per tutti</h1>
-            <button onclick="getRandomCat()">Genera un gatto random</button>
-            <button onclick="saveCat()">Salva il gatto</button>
+        <div class="gatto-random">
+            <span class="button" onclick="nuovoGatto()">Nuovo gatto</span>
+            <span class="button" onclick="aggiungiAiPreferiti()">Aggiungi ai preferiti</span>
             <br/><br/>
             <img id="gatto" src="" alt="">
+        </div>
 
-            <h2>Lista dei gatti salvati</h2>
-            <div id="gatti-salvati">
+        <div class="preferiti-contenitore">
+            <h2 class="preferiti-titolo">
+                Preferiti
+                <span class="button" onclick="svuotaPreferiti()">Svuota lista</span>
+            </h2>
+            <div id="preferiti">
             </div>
         </div>
 
 
         <script>
-            async function getRandomCat() {
+            // variabile globale che contiene la lista di url delle immagini di gatti
+            let gatti = recuperaPreferiti();
+            stampaPreferiti();
+            nuovoGatto();
+
+            async function nuovoGatto() {
                 const url = "https://cataas.com/cat?json=true";
                 
                 try {
@@ -31,49 +68,51 @@
                     const response = await fetch(url);
                     // faccio il parsing della risposta come JSON
                     const catData = await response.json();
+
                     // costruisco l'URL dell'immagine e la inserisco nella pagina
                     const imageUrl = "https://cataas.com/cat/" + catData.id;
                     const img = document.getElementById("gatto");
                     img.src = imageUrl;
                 } catch (error) {
-                    console.log("Error fetching cat", error.message)
+                    console.log("Errore chiamata GET", error.message);
                 }
             }
 
-            function saveCat() {
+            function aggiungiAiPreferiti() {
                 const img = document.getElementById("gatto");
-                const imageUrl = img.src;
-
-                const gatti = document.getElementById("gatti-salvati");
-                const nuovaImmagine = document.createElement("img");
-                nuovaImmagine.src = imageUrl;
-                gatti.appendChild(nuovaImmagine);
-
-                let gattiSalvati = localStorage.getItem("gatti");
-                if (!gattiSalvati) {
-                    gattiSalvati = [];
-                }
-                else {
-                    gattiSalvati = JSON.parse(gattiSalvati);
-                }
-                gattiSalvati.push(imageUrl);
-                localStorage.setItem("gatti", JSON.stringify(gattiSalvati));
+                gatti.unshift(img.src); // aggiungi in testa all'array
+                salvaPreferiti();
+                stampaPreferiti();
             }
 
-            function recuperaGattiSalvati() {
-                let gattiSalvati = JSON.parse(localStorage.getItem("gatti"));
-                console.log(gattiSalvati);
-                const gatti = document.getElementById("gatti-salvati");
-                gattiSalvati.forEach(urlImmagine => {
-                    const nuovaImmagine = document.createElement("img");
-                    nuovaImmagine.src = urlImmagine;
-                    gatti.appendChild(nuovaImmagine);
-                })
+            function svuotaPreferiti() {
+                gatti = [];
+                salvaPreferiti();
+                stampaPreferiti();
             }
 
-            recuperaGattiSalvati();
-            // localStorage.setItem("gatti", "[]")
-            getRandomCat();
+            // aggiorna la lista di gatti preferiti
+            function stampaPreferiti() {
+                const divPreferiti = document.getElementById("preferiti");
+                divPreferiti.textContent = ''; // svuoto elenco di preferiti
+                gatti.forEach(urlGatto => { // ricreo tutto l'elenco
+                    const nuovaImg = document.createElement("img");
+                    nuovaImg.src = urlGatto;
+                    divPreferiti.appendChild(nuovaImg);
+                });
+            }
+
+            // salva lista gatti nel localStorage
+            function salvaPreferiti() {
+                localStorage.setItem("preferiti", JSON.stringify(gatti));
+            }
+
+            // recupera lista gatti dal localStorage
+            function recuperaPreferiti() {
+                let preferiti = localStorage.getItem("preferiti");
+                if (!preferiti) return [];
+                return JSON.parse(preferiti);
+            }
         </script>
     </body>
 </html>
