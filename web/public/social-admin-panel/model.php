@@ -15,9 +15,28 @@ function getTotali() {
     $row = $result->fetch_assoc(); // tiro fuori la prima riga dal risultato della query
     $tot_utenti_sett = $row['conteggio'];
 
+    $result = $conn->query("SELECT COUNT(*) AS conteggio FROM posts");
+    $row = $result->fetch_assoc(); // tiro fuori la prima riga dal risultato della query
+    $tot_post = $row['conteggio'];
+
+    $result = $conn->query("SELECT COUNT(*) AS conteggio FROM post_likes");
+    $row = $result->fetch_assoc(); // tiro fuori la prima riga dal risultato della query
+    $tot_like_post = $row['conteggio'];
+
+    $result = $conn->query("SELECT COUNT(*) AS conteggio FROM comments");
+    $row = $result->fetch_assoc(); // tiro fuori la prima riga dal risultato della query
+    $tot_commenti = $row['conteggio'];
+
+    $result = $conn->query("SELECT COUNT(*) AS conteggio FROM comment_likes");
+    $row = $result->fetch_assoc(); // tiro fuori la prima riga dal risultato della query
+    $tot_like_commenti = $row['conteggio'];
+
     return array(
         "utenti" => $tot_utenti,
-        "utenti_sett" => $tot_utenti_sett
+        "utenti_sett" => $tot_utenti_sett,
+        "post" => $tot_post,
+        "like" => $tot_like_post,
+        "commenti" => $tot_like_commenti,
     );
 }
 
@@ -29,7 +48,6 @@ function getUltimiUtentiRegistrati() {
     global $conn;
     return $conn->query("SELECT * FROM users ORDER BY created_at DESC LIMIT 5");
 }
-
 
 // 10 post piu' popolari (con piu' like)
 function getPostPopolari() {

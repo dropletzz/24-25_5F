@@ -60,15 +60,15 @@ function formatDate($date_str) {
             <div class="totali">
                 <div>
                     Totale dei post:<br/>
-                    <span>112</span>
+                    <span><?= $totali['post'] ?></span>
                 </div>
                 <div>
                     Totale dei commenti:<br/>
-                    <span>347</span>
+                    <span><?= $totali['commenti'] ?></span>
                 </div>
                 <div>
                     Totale dei like:<br/>
-                    <span>1832</span>
+                    <span><?= $totali['like'] ?></span>
                 </div>
             </div>
             <hr>

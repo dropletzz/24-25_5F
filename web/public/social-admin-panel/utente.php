@@ -1,11 +1,11 @@
 <?php
+require_once './model.php';
 
 if (!isset($_GET['id'])) {
     http_response_code(404);
     return;
 }
 
-require_once './model.php';
 $user = getUtente($_GET['id']);
 ?>
 
