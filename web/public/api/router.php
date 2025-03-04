@@ -10,6 +10,21 @@ $params = [];
 // tutte le risposte saranno in formato JSON
 header('Content-Type: application/json');
 
+if (req_is("GET", "/api/echo")) {
+    echo json_encode($_GET);
+}
+else if (req_is("POST", "/api/echo")) {
+    echo $request['body'];
+}
+else if (req_is("GET", "/api/echo/:id")) {
+    $id = $params[0];
+    echo "GET id=$id";
+}
+else {
+    return http_response_code(404);
+}
+
+/*
 if (req_is("GET", "/api/cats")) {
     // SELECT tutti i gatti
 }
@@ -28,6 +43,7 @@ else if (req_is("DELETE", "/api/cats/:id")) {
 else {
     return http_response_code(404);
 }
+*/
 
 function req_is($method, $uri) {
     global $request;
@@ -41,11 +57,11 @@ function req_is($method, $uri) {
     $words = explode('/', $uri); // "/api/cats/:id" diventa ["", "api", "cats", ":id"]
     foreach ($words as $i => $word) {
         if (str_starts_with($word, ':'))
-            $regex = $regex . "\/([^\/]+)";
+            $regex = $regex . "\/([^\/\?]+)";
         else if ($word != '')
             $regex = $regex . "\/$word";
     }
-    $regex = "/^$regex\/?$/";
+    $regex = "/^$regex(:?\?[^\?]*)?\/?$/";
 
     // faccio il match con la regex
     $matches = [];
