@@ -61,7 +61,7 @@ function req_is($method, $uri) {
         else if ($word != '')
             $regex = $regex . "\/$word";
     }
-    $regex = "/^$regex(:?\?[^\?]*)?\/?$/";
+    $regex = "/^$regex(:?(:?\?[^\?]*)|\/)?$/";
 
     // faccio il match con la regex
     $matches = [];
