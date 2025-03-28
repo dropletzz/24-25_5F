@@ -1,58 +1,42 @@
 <?php
 
-require_once '../dbconn.php';
-$conn = getDbConnection('images_spa');
+require_once 'model.php';
+$dbname = 'images_spa';
+// la classe Model gestisce tutte le interazioni col DB
+$model = new Model($dbname);
 
+// $request contiene i dati della richiesta HTTP
 $request = array(
     'method' => $_SERVER['REQUEST_METHOD'],
     'uri'    => $_SERVER['REQUEST_URI'],
     'body'   => file_get_contents('php://input'),
 );
+
+// $params contiene eventuali parametri inseriti
+// nell'URL della richiesta (si veda la funzione req_is)
 $params = [];
 
 // tutte le risposte saranno in formato JSON
 header('Content-Type: application/json');
 
-// trasforma un'immagine presa dal database in un'immagine delle API REST
-function map_image($db_image) {
-    return [
-        "id" => intval($db_image['id']),
-        "image_url" => $db_image['url'],
-        "rating" => intval($db_image['rating']),
-        "description" => $db_image['description']
-    ];
-};
-
-// controlla che l'immagine REST contenga tutti i campi obbligatori
-function validate_image($rest_image) {
-    if (!isset($rest_image['image_url']) || !isset($rest_image['rating'])) {
-        http_response_code(400);
-        echo json_encode(["error" => "Parametri mancanti o non validi."]);
-        exit;
-    }
-};
-
-
-// INIZIO --  GESTIONE DELLE RICHIESTE HTTP
+// INIZIO -- GESTIONE DELLE RICHIESTE HTTP
 if (req_is("GET", "/api/images")) {
-    $query_result = $conn->query("SELECT * FROM images");
-    $images = $query_result->fetch_all(MYSQLI_ASSOC);
-    if (sizeof($images) == 0) {
-        http_response_code(204);
-        exit;
-    }
+    $images = $model->getImages();
+    if (sizeof($images) == 0) respond(204);
     $response_body = array_map('map_image', $images);
-    echo json_encode($response_body);
+    respond(200, $response_body);
 }
 else if (req_is("POST", "/api/images")) {
     $req_body = json_decode($request['body'], true);
-    validate_image($req_body);
-    $stmt = $conn->prepare("INSERT INTO images (url, description, rating) VALUES (?, ?, ?)");
-    $stmt->bind_param("ssi", $req_body['image_url'], $req_body['description'], $req_body['rating']);
-    $stmt->execute();
-    http_response_code(201);
-    echo json_encode([
-        "id" => $conn->insert_id,
+
+    if (!validate_image($req_body))
+        respond(400, ["error" => "Parametri mancanti o non validi."]);
+
+    $id = $model->insertImage($req_body);
+    if (!$id) respond(400, ["error" => "Impossibile eseguire la query di inserimento"]);
+
+    respond(201, [
+        "id" => $id,
         "url" => $req_body['image_url'],
         "description" => $req_body['description'],
         "rating" => $req_body['rating']
@@ -60,27 +44,21 @@ else if (req_is("POST", "/api/images")) {
 }
 else if (req_is("GET", "/api/images/:id")) {
     $id = $params[0];
-    $stmt = $conn->prepare("SELECT * FROM images WHERE id = ?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $image = $result->fetch_assoc();
-    if ($image) {
-        http_response_code(200);
-        echo json_encode($map_image($image));
-    } else {
-        http_response_code(404);
-        echo json_encode(["error" => "Immagine non trovata."]);
-    }
+    $image = $model->getImage($id);
+    if ($image) respond(200, map_image($image));
+    else        respond(404, ["error" => "Immagine non trovata."]);
 }
 else if (req_is("PUT", "/api/images/:id")) {
     $id = $params[0];
     $req_body = json_decode($request['body'], true);
-    validate_image($req_body);
-    $stmt = $conn->prepare("UPDATE images SET url = ?, description = ?, rating = ? WHERE id = ?");
-    $stmt->bind_param("ssii", $req_body['image_url'], $req_body['description'], $req_body['rating'], $id);
-    $stmt->execute();
-    echo json_encode([
+
+    if (!validate_image($req_body))
+        respond(400, ["error" => "Parametri mancanti o non validi."]);
+
+    if (!$model->updateImage($id, $req_body))
+        respond(400, ["error" => "Impossibile eseguire la query di inserimento"]);
+
+    respond(200, [
         "id" => $id,
         "url" => $req_body['image_url'],
         "description" => $req_body['description'],
@@ -89,19 +67,11 @@ else if (req_is("PUT", "/api/images/:id")) {
 }
 else if (req_is("DELETE", "/api/images/:id")) {
     $id = $params[0];
-    $stmt = $conn->prepare("DELETE FROM images WHERE id = ?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    if ($stmt->affected_rows > 0) {
-        http_response_code(204);
-    }
-    else {
-        http_response_code(404);
-        echo json_encode(["error" => "Immagine non trovata."]);
-    }
+    if ($model->deleteImage($id)) respond(204);
+    else respond(404, ["error" => "Immagine non trovata."]);
 }
 else {
-    http_response_code(404);
+    respond(404);
 }
 // FINE -- GESTIONE DELLE RICHIESTE HTTP
 
@@ -138,4 +108,26 @@ function req_is($method, $uri) {
     
     return $ok;
 }
+
+// trasforma un'immagine presa dal database in un'immagine delle API REST
+function map_image($db_image) {
+    return [
+        "id" => intval($db_image['id']),
+        "image_url" => $db_image['url'],
+        "rating" => intval($db_image['rating']),
+        "description" => $db_image['description']
+    ];
+}
+
+// controlla che l'immagine REST contenga tutti i campi obbligatori
+function validate_image($rest_image) {
+    return isset($rest_image['image_url']) && isset($rest_image['rating']);
+}
+
+function respond($statusCode, $body = "") {
+    http_response_code($statusCode);
+    echo json_encode($body);
+    exit;
+}
+
 ?>
