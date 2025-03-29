@@ -1,32 +1,24 @@
 <?php
 
-require_once 'model.php';
+require_once 'Model.php';
 $dbname = 'images_spa';
 // la classe Model gestisce tutte le interazioni col DB
 $model = new Model($dbname);
 
-// $request contiene i dati della richiesta HTTP
-$request = array(
-    'method' => $_SERVER['REQUEST_METHOD'],
-    'uri'    => $_SERVER['REQUEST_URI'],
-    'body'   => file_get_contents('php://input'),
-);
-
-// $params contiene eventuali parametri inseriti
-// nell'URL della richiesta (si veda la funzione req_is)
-$params = [];
+require_once 'RoutesHandler.php';
+$routes = new RoutesHandler($model);
 
 // tutte le risposte saranno in formato JSON
 header('Content-Type: application/json');
 
-// INIZIO -- GESTIONE DELLE RICHIESTE HTTP
-if (req_is("GET", "/api/images")) {
+$routes->add("GET", "/api/images", function ($request, $params, $model) {
     $images = $model->getImages();
     if (sizeof($images) == 0) respond(204);
     $response_body = array_map('map_image', $images);
     respond(200, $response_body);
-}
-else if (req_is("POST", "/api/images")) {
+});
+
+$routes->add("POST", "/api/images", function ($request, $params, $model) {
     $req_body = json_decode($request['body'], true);
 
     if (!validate_image($req_body))
@@ -41,14 +33,16 @@ else if (req_is("POST", "/api/images")) {
         "description" => $req_body['description'],
         "rating" => $req_body['rating']
     ]);
-}
-else if (req_is("GET", "/api/images/:id")) {
+});
+
+$routes->add("GET", "/api/images/:id", function ($request, $params, $model) {
     $id = $params[0];
     $image = $model->getImage($id);
     if ($image) respond(200, map_image($image));
     else        respond(404, ["error" => "Immagine non trovata."]);
-}
-else if (req_is("PUT", "/api/images/:id")) {
+});
+
+$routes->add("PUT", "/api/images/:id", function ($request, $params, $model) {
     $id = $params[0];
     $req_body = json_decode($request['body'], true);
 
@@ -64,50 +58,22 @@ else if (req_is("PUT", "/api/images/:id")) {
         "description" => $req_body['description'],
         "rating" => $req_body['rating']
     ]);
-}
-else if (req_is("DELETE", "/api/images/:id")) {
+});
+
+$routes->add("DELETE", "/api/images/:id", function ($request, $params, $model) {
     $id = $params[0];
     if ($model->deleteImage($id)) respond(204);
     else respond(404, ["error" => "Immagine non trovata."]);
-}
-else {
-    respond(404);
-}
-// FINE -- GESTIONE DELLE RICHIESTE HTTP
+});
 
-// Funzione usata per identficare l'URL della richiesta
-// ed eventualmente estrarre dei parametri dall'URL.
-// I parametri iniziano con il carattere ':', ad esempio:
-// req_is("GET", "/api/posts/:id") restituisce vero se 
-// la richiesta e' GET /api/posts/123 e l'array globale
-// $params conterra' il valore [123]
-function req_is($method, $uri) {
-    global $request;
-    global $params;
-    $params = [];
+// $request contiene i dati della richiesta HTTP
+$request = array(
+    'method' => $_SERVER['REQUEST_METHOD'],
+    'path'    => $_SERVER['REQUEST_URI'],
+    'body'   => file_get_contents('php://input'),
+);
 
-    if ($request['method'] != $method) return false;
-
-    // costruisco la regex
-    $regex = '';
-    $words = explode('/', $uri); // "/api/cats/:id" diventa ["", "api", "cats", ":id"]
-    foreach ($words as $i => $word) {
-        if (str_starts_with($word, ':'))
-            $regex = $regex . "\/([^\/\?]+)";
-        else if ($word != '')
-            $regex = $regex . "\/$word";
-    }
-    $regex = "/^$regex(:?(:?\?[^\?]*)|\/)?$/";
-
-    // faccio il match con la regex
-    $matches = [];
-    $ok = preg_match($regex, $request['uri'], $matches);
-    foreach ($matches as $i => $match) {
-        if ($i > 0) array_push($params, $match);
-    }
-    
-    return $ok;
-}
+if (!$routes->handle($request)) respond(404);
 
 // trasforma un'immagine presa dal database in un'immagine delle API REST
 function map_image($db_image) {

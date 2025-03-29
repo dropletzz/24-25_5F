@@ -1,8 +1,8 @@
 <?php
 
 class Model {
-    public $conn;
-    public $dbname = 'images_spa';
+    private $conn;
+    private $dbname = 'images_spa';
     
     function __construct($dbname) {
         $this->dbname = $dbname;
