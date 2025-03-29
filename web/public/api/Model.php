@@ -2,11 +2,11 @@
 
 class Model {
     private $conn;
-    private $dbname = 'images_spa';
+    private $dbname;
     
     function __construct($dbname) {
         $this->dbname = $dbname;
-        $this->conn = getDbConnection($this->dbname);
+        $this->conn = Model::getDbConnection($this->dbname);
     }
 
     function getImage($id) {
@@ -40,22 +40,22 @@ class Model {
         $stmt->bind_param("i", $id);
         return $stmt->execute() && $stmt->affected_rows > 0;
     }
-}
 
-function getDbConnection($dbname) {
-    $servername = $_ENV['DB_HOST'] ?? 'localhost';
-    $username = 'root';
-    $password = '';
+    private static function getDbConnection($dbname) {
+        $servername = $_ENV['DB_HOST'] ?? 'localhost';
+        $username = 'root';
+        $password = '';
 
-    // provo a connettermi al db
-    $conn = new mysqli($servername, $username, $password, $dbname);
+        // provo a connettermi al db
+        $conn = new mysqli($servername, $username, $password, $dbname);
 
-    // se non riesco a connettermi, termino l'esecuzione
-    if ($conn->connect_error) {
-        die('Connection failed: ' . $conn->connect_error);
+        // se non riesco a connettermi, termino l'esecuzione
+        if ($conn->connect_error) {
+            die('Connection failed: ' . $conn->connect_error);
+        }
+
+        return $conn;
     }
-
-    return $conn;
 }
 
 ?>
