@@ -9,14 +9,15 @@ class RoutesHandler {
         $this->inject = $inject;
     }
 
-    function add($method, $magic_path, $handler) {
+    function mount(string $method, string $magic_path, callable $handler): RoutesHandler {
         if (isset($this->handlers[$method]))
             array_push($this->handlers[$method], [$magic_path, $handler]);
         else 
             $this->handlers[$method] = [[$magic_path, $handler]];
+        return $this;
     }
 
-    function handle($request) {
+    function handle(array $request): bool {
         $method = $request['method'];
         if (!isset($this->handlers[$method])) return false;
 
@@ -28,6 +29,10 @@ class RoutesHandler {
         }
 
         return false;
+    }
+
+    function with_prefix(string $path_prefix)  {
+        return new PrefixedRoutesMounter($this, $path_prefix);
     }
 
     // Funzione usata per identficare il percorso della richiesta
@@ -60,6 +65,21 @@ class RoutesHandler {
         }
         return $params;
     }
-};
+}
+
+class PrefixedRoutesMounter {
+    private RoutesHandler $routes;
+    private string $prefix;
+
+    function __construct(RoutesHandler $routes, string $prefix) {
+        $this->routes = $routes;
+        $this->prefix = $prefix;
+    }
+
+    function mount(string $method, string $magic_path, callable $handler): PrefixedRoutesMounter {
+        $this->routes->mount($method, $this->prefix.$magic_path, $handler);
+        return $this;
+    }
+}
 
 ?>

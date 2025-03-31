@@ -1,15 +1,15 @@
 <?php
 
 class Model {
-    private $conn;
-    private $dbname;
+    private mysqli $conn;
+    private string $dbname;
     
     function __construct($dbname) {
         $this->dbname = $dbname;
         $this->conn = Model::getDbConnection($this->dbname);
     }
 
-    function getImage($id) {
+    function getImage(int $id) {
         $stmt = $this->conn->prepare("SELECT * FROM images WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -17,31 +17,31 @@ class Model {
         return $result->fetch_assoc();
     }
 
-    function getImages() {
+    function getImages(): array {
         $query_result = $this->conn->query("SELECT * FROM images");
         $images = $query_result->fetch_all(MYSQLI_ASSOC);
         return $images;
     }
 
-    function insertImage($img) {
+    function insertImage(array $img): bool {
         $stmt = $this->conn->prepare("INSERT INTO images (url, description, rating) VALUES (?, ?, ?)");
         $stmt->bind_param("ssi", $img['image_url'], $img['description'], $img['rating']);
         return $stmt->execute();
     }
 
-    function updateImage($id, $img) {
+    function updateImage(int $id, array $img): bool {
         $stmt = $this->conn->prepare("UPDATE images SET url = ?, description = ?, rating = ? WHERE id = ?");
         $stmt->bind_param("ssii", $img['image_url'], $img['description'], $img['rating'], $id);
         return $stmt->execute();
     }
 
-    function deleteImage($id) {
+    function deleteImage(int $id): bool {
         $stmt = $this->conn->prepare("DELETE FROM images WHERE id = ?");
         $stmt->bind_param("i", $id);
         return $stmt->execute() && $stmt->affected_rows > 0;
     }
 
-    private static function getDbConnection($dbname) {
+    private static function getDbConnection(string $dbname): mysqli {
         $servername = $_ENV['DB_HOST'] ?? 'localhost';
         $username = 'root';
         $password = '';

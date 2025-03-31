@@ -1,24 +1,23 @@
 <?php
 
 require_once 'Model.php';
-$dbname = 'images_spa';
-// la classe Model gestisce tutte le interazioni col DB
-$model = new Model($dbname);
-
 require_once 'RoutesHandler.php';
-$routes = new RoutesHandler($model);
+
+$dbname = 'images_spa';
+$model = new Model($dbname); // interazioni col DB
+$routes = new RoutesHandler($model); // definizione delle API
 
 // tutte le risposte saranno in formato JSON
 header('Content-Type: application/json');
 
-$routes->add("GET", "/api/images", function ($request, $params, $model) {
+$routes->with_prefix("/api/images/")
+->mount("GET", "",  function ($request, $params, $model) {
     $images = $model->getImages();
     if (sizeof($images) == 0) respond(204);
     $response_body = array_map('map_image', $images);
     respond(200, $response_body);
-});
-
-$routes->add("POST", "/api/images", function ($request, $params, $model) {
+})
+->mount("POST", "",  function ($request, $params, $model) {
     $req_body = json_decode($request['body'], true);
 
     if (!validate_image($req_body))
@@ -33,16 +32,14 @@ $routes->add("POST", "/api/images", function ($request, $params, $model) {
         "description" => $req_body['description'],
         "rating" => $req_body['rating']
     ]);
-});
-
-$routes->add("GET", "/api/images/:id", function ($request, $params, $model) {
+})
+->mount("GET", ":id",  function ($request, $params, $model) {
     $id = $params[0];
     $image = $model->getImage($id);
     if ($image) respond(200, map_image($image));
     else        respond(404, ["error" => "Immagine non trovata."]);
-});
-
-$routes->add("PUT", "/api/images/:id", function ($request, $params, $model) {
+})
+->mount("PUT", ":id",  function ($request, $params, $model) {
     $id = $params[0];
     $req_body = json_decode($request['body'], true);
 
@@ -50,7 +47,7 @@ $routes->add("PUT", "/api/images/:id", function ($request, $params, $model) {
         respond(400, ["error" => "Parametri mancanti o non validi."]);
 
     if (!$model->updateImage($id, $req_body))
-        respond(400, ["error" => "Impossibile eseguire la query di inserimento"]);
+        respond(400, ["error" => "Impossibile eseguire la query di update"]);
 
     respond(200, [
         "id" => $id,
@@ -58,9 +55,8 @@ $routes->add("PUT", "/api/images/:id", function ($request, $params, $model) {
         "description" => $req_body['description'],
         "rating" => $req_body['rating']
     ]);
-});
-
-$routes->add("DELETE", "/api/images/:id", function ($request, $params, $model) {
+})
+->mount("DELETE", ":id",  function ($request, $params, $model) {
     $id = $params[0];
     if ($model->deleteImage($id)) respond(204);
     else respond(404, ["error" => "Immagine non trovata."]);
