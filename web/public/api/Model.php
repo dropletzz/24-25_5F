@@ -23,10 +23,10 @@ class Model {
         return $images;
     }
 
-    function insertImage(array $img): bool {
+    function insertImage(array $img): int {
         $stmt = $this->conn->prepare("INSERT INTO images (url, description, rating) VALUES (?, ?, ?)");
         $stmt->bind_param("ssi", $img['image_url'], $img['description'], $img['rating']);
-        return $stmt->execute();
+        return $stmt->execute() ? $stmt->insert_id : -1;
     }
 
     function updateImage(int $id, array $img): bool {

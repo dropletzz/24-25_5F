@@ -24,7 +24,7 @@ $routes->with_prefix("/api/images/")
         respond(400, ["error" => "Parametri mancanti o non validi."]);
 
     $id = $model->insertImage($req_body);
-    if (!$id) respond(400, ["error" => "Impossibile eseguire la query di inserimento"]);
+    if ($id < 0) respond(400, ["error" => "Impossibile eseguire la query di inserimento"]);
 
     respond(201, [
         "id" => $id,

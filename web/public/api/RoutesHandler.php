@@ -31,17 +31,15 @@ class RoutesHandler {
         return false;
     }
 
-    function with_prefix(string $path_prefix)  {
+    function with_prefix(string $path_prefix): PrefixedRoutesMounter {
         return new PrefixedRoutesMounter($this, $path_prefix);
     }
 
-    // Funzione usata per identficare il percorso della richiesta
-    // ed eventualmente estrarre dei parametri dal percorso.
-    // I parametri iniziano con il carattere ':', ad esempio:
-    // req_is("GET", "/api/posts/:id") restituisce vero se 
-    // la richiesta e' GET /api/posts/123 e l'array globale
-    // $params conterra' il valore [123]
-    private static function path_match($path, $magic_path) {
+
+    // Confronta il percorso effettivo di una richiesta ($path)
+    // con le rotte parametriche ($magic_path).
+    // TODO esempio di utilizzo
+    private static function path_match(string $path, string $magic_path): array | null {
         $params = [];
 
         // costruisco la regex
@@ -53,7 +51,7 @@ class RoutesHandler {
             else if ($word != '')
                 $regex = $regex . "\/$word";
         }
-        $regex = "/^$regex(:?(:?\?[^\?]*)|\/)?$/";
+        $regex = "/^$regex(:?(:?\?[^\?]*)|\/?)?$/";
 
         // faccio il match con la regex
         $matches = [];
@@ -77,7 +75,8 @@ class PrefixedRoutesMounter {
     }
 
     function mount(string $method, string $magic_path, callable $handler): PrefixedRoutesMounter {
-        $this->routes->mount($method, $this->prefix.$magic_path, $handler);
+        $new_path = $this->prefix.$magic_path;
+        $this->routes->mount($method, $new_path, $handler);
         return $this;
     }
 }
