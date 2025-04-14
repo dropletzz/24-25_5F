@@ -11,13 +11,15 @@ DB_PASS=""
 
 # Risposte corrette
 ANSWERS = [
-# a)
+# a) Elenco delle stazioni di monitoraggio ambientale con l’indicazione delle loro coordinate geografiche e il nome del toponimo della strada su cui sono installate.
+# (nome_stazione, latitudine, longitudine, toponimo_strada)
 """
 SELECT s.nome AS nome_stazione, s.latitudine, s.longitudine, a.toponimo AS toponimo_strada
 FROM StazioneDiMisurazione s
 JOIN Arco a ON s.id_arco = a.id;
 """,
-# b)
+# b) Elenco delle concentrazioni di inquinanti rilevate dalle varie stazioni di monitoraggio ambientale in un giorno specificato (1 aprile 2024). L’elenco dovrà riportare nell’ordine il riferimento temporale del rilievo, il tipo di inquinante, il suo valore misurato con i valori di soglia di attenzione e di allarme, e la stazione che ha effettuato la misura. I dati dovranno essere ordinati per tipo di inquinante, ora e stazione di rilievo.
+# (data, nome_inquinante, valore_misurato, soglia_attenzione, soglia_allarme, nome_stazione)
 """
 SELECT m.data, i.nome AS nome_inquinante, m.value AS valore_misurato, i.soglia_attenzione, i.soglia_allarme, s.nome AS nome_stazione
 FROM Misurazione m
@@ -26,7 +28,8 @@ JOIN StazioneDiMisurazione s ON m.id_stazione = s.id
 WHERE DATE(m.data) = '2024-04-01'
 ORDER BY i.nome, m.data, s.nome;
 """,
-# c)
+# c) Livello di servizio medio dei vari archi monitorati in uno specifico giorno (1 aprile 2024).
+# (id_arco, nome_arco, livello_di_servizio)
 """
 SELECT a.id AS id_arco, a.toponimo AS nome_arco, AVG(m.value)/a.capacita_max AS livello_di_servizio
 FROM Misurazione m
@@ -35,7 +38,8 @@ JOIN Arco a ON s.id_arco = a.id
 WHERE DATE(m.data) = '2024-04-01' AND s.tipo = 'traffico'
 GROUP BY a.id;
 """,
-# d)
+# d) Elencare tutte le stazioni di monitoraggio ambientale, insieme al conteggio del numero di allarmi generati in un determinato periodo temporale (dal 1 al 3 aprile 2024). Numero di allarmi = numero di misure che superano la soglia di allarme.
+# (id_stazione, nome_stazione, numero_allarmi)
 """
 SELECT s.id AS id_stazione, s.nome AS nome_stazione, COUNT(*) as numero_allarmi
 FROM StazioneDiMisurazione s
@@ -45,7 +49,7 @@ WHERE s.tipo = "aria" AND m.value > i.soglia_allarme
 AND m.data BETWEEN '2024-04-01 00:00:00' AND '2024-04-03 23:59:59'
 GROUP BY s.id;
 """,
-# e)
+# e) Realizzare una porzione di codice che tramite una tecnologia idonea permetta di visualizzare tramite un sistema web-based i risultati della query di cui al punto b delle precedenti dando la possibilità di indicare la data voluta e, facoltativamente, anche un arco di riferimento.
 None, # non corretta automaticamente
 ]
 
