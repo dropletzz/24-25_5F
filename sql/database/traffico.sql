@@ -85,6 +85,7 @@ INSERT INTO Arco(toponimo, lunghezza, id_nodo_partenza, id_nodo_arrivo) VALUES
 ("strada21", 5.00, (SELECT id FROM Nodo WHERE toponimo = "G"), (SELECT id FROM Nodo WHERE toponimo = "H")),
 ("strada10", 58, (SELECT id FROM Nodo WHERE toponimo = "F"), (SELECT id FROM Nodo WHERE toponimo = "A")),
 ("strada323", 60.00, (SELECT id FROM Nodo WHERE toponimo = "I"), (SELECT id FROM Nodo WHERE toponimo = "C"));
+UPDATE Arco SET capacita_max = 100;
 
 INSERT INTO StazioneDiMisurazione(nome, tipo, id_arco, latitudine, longitudine) VALUES
 ("s1", "aria", (SELECT id FROM Arco WHERE toponimo = "strada1"), 12.31000000, 133.07100000),
