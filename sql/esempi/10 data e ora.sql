@@ -28,6 +28,8 @@ INSERT INTO eventi (name, date) VALUES
 
 -- funzioni per estrarre parti di una data:
 SELECT 
+	DATE(date) AS anno_mese_e_giorno,
+	TIME(date) AS ore_minuti_e_secondi,
 	YEAR(date) AS anno,
   MONTH(date) AS mese,
   DAY(date) AS giorno,

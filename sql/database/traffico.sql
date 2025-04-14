@@ -109,16 +109,16 @@ INSERT INTO Inquinante (nome, soglia_attenzione, soglia_allarme)  VALUES
 UPDATE Inquinante SET soglia_attenzione = soglia_allarme * 0.75;
 
 INSERT INTO Misurazione (id_stazione, id_inquinante, value, data) VALUES
-((SELECT id FROM StazioneDiMisurazione WHERE nome = "s1"), (SELECT id FROM Inquinante WHERE nome = "Particolato PM10"), 35.5, '2024-04-01 08:00:00'),
+((SELECT id FROM StazioneDiMisurazione WHERE nome = "s1"), (SELECT id FROM Inquinante WHERE nome = "Particolato PM10"), 75.5, '2024-04-01 08:00:00'),
 ((SELECT id FROM StazioneDiMisurazione WHERE nome = "s1"), (SELECT id FROM Inquinante WHERE nome = "Particolato PM2.5"), 15.2, '2024-04-01 08:00:00'),
 ((SELECT id FROM StazioneDiMisurazione WHERE nome = "s2"), NULL, 150, '2024-04-01 08:15:00'), -- Esempio di misurazione traffico (id_inquinante può essere NULL o avere un valore specifico se si misura un inquinante legato al traffico)
 ((SELECT id FROM StazioneDiMisurazione WHERE nome = "s3"), (SELECT id FROM Inquinante WHERE nome = "Ozono (O3)"), 90.1, '2024-04-01 08:30:00'),
 ((SELECT id FROM StazioneDiMisurazione WHERE nome = "s3"), (SELECT id FROM Inquinante WHERE nome = "Diossido di Azoto (NO2)"), 180.5, '2024-04-01 08:30:00'),
 ((SELECT id FROM StazioneDiMisurazione WHERE nome = "s4"), NULL, 210, '2024-04-01 08:45:00'),
 ((SELECT id FROM StazioneDiMisurazione WHERE nome = "s5"), NULL, 95, '2024-04-01 09:00:00'),
-((SELECT id FROM StazioneDiMisurazione WHERE nome = "s6"), (SELECT id FROM Inquinante WHERE nome = "Monossido di Carbonio (CO)"), 5.3, '2024-04-01 09:15:00'),
+((SELECT id FROM StazioneDiMisurazione WHERE nome = "s6"), (SELECT id FROM Inquinante WHERE nome = "Monossido di Carbonio (CO)"), 37.3, '2024-04-01 09:15:00'),
 ((SELECT id FROM StazioneDiMisurazione WHERE nome = "s7"), NULL, 180, '2024-04-01 09:30:00'),
-((SELECT id FROM StazioneDiMisurazione WHERE nome = "s1"), (SELECT id FROM Inquinante WHERE nome = "Particolato PM10"), 40.2, '2024-04-01 10:00:00'),
+((SELECT id FROM StazioneDiMisurazione WHERE nome = "s1"), (SELECT id FROM Inquinante WHERE nome = "Particolato PM10"), 140.2, '2024-04-04 01:00:00'),
 ((SELECT id FROM StazioneDiMisurazione WHERE nome = "s3"), (SELECT id FROM Inquinante WHERE nome = "Ozono (O3)"), 105.7, '2024-04-01 10:30:00'),
 ((SELECT id FROM StazioneDiMisurazione WHERE nome = "s1"), (SELECT id FROM Inquinante WHERE nome = "Diossido di Azoto (NO2)"), 150.8, '2024-04-02 12:00:00'),
 ((SELECT id FROM StazioneDiMisurazione WHERE nome = "s6"), (SELECT id FROM Inquinante WHERE nome = "Benzene (C6H6)"), 2.1, '2024-04-02 14:45:00'),
