@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipologie di input</title>
+    <style>
+        .input-container {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .input-container label,
+        .input-container > div {
+            margin-bottom: 5px;
+        }
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-left: 3px solid #007bff;
+            font-family: monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <form action="#" method="post">
+
+        <div class="input-container">
+            <label for="testo">Testo:</label>
+            <input type="text" id="testo" name="testo">
+            <div class="code-block">
+                <code>&lt;input type="text" id="testo" name="testo"&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="textarea">Area di Testo:</label><br>
+            <textarea id="textarea" name="textarea" rows="5" cols="30"></textarea>
+            <div class="code-block">
+                <code>&lt;textarea id="textarea" name="textarea" rows="5" cols="30"&gt;&lt;/textarea&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+            <div class="code-block">
+                <code>&lt;input type="password" id="password" name="password"&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="numero">Numero:</label>
+            <input type="number" id="numero" name="numero">
+            <div class="code-block">
+                <code>&lt;input type="number" id="numero" name="numero"&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+            <div class="code-block">
+                <code>&lt;input type="email" id="email" name="email"&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data">
+            <div class="code-block">
+                <code>&lt;input type="date" id="data" name="data"&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="ora">Ora:</label>
+            <input type="time" id="ora" name="ora">
+            <div class="code-block">
+                <code>&lt;input type="time" id="ora" name="ora"&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="datetime-locale">Data e Ora (Locale):</label>
+            <input type="datetime-local" id="datetime-locale" name="datetime-locale">
+            <div class="code-block">
+                <code>&lt;input type="datetime-local" id="datetime-locale" name="datetime-locale"&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="select">Selezione (Dropdown):</label>
+            <select id="select" name="select">
+                <option value="valore1">Valore 1</option>
+                <option value="valore2">Valore 2</option>
+                <option value="valore3">Valore 3</option>
+            </select>
+            <div class="code-block">
+                <code>&lt;select id="select" name="select"&gt;<br>
+                &lt;option value="valore1"&gt;Valore 1&lt;/option&gt;<br>
+                &lt;option value="valore2"&gt;Valore 2&lt;/option&gt;<br>
+                &lt;option value="valore3"&gt;Valore 3&lt;/option&gt;<br>
+                &lt;/select&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label>Radio Buttons:</label><br>
+            <div>
+                <input type="radio" id="opzione1" name="opzioni" value="opzione1">
+                <label for="opzione1">Opzione 1</label>
+            </div>
+            <div>
+                <input type="radio" id="opzione2" name="opzioni" value="opzione2">
+                <label for="opzione2">Opzione 2</label>
+            </div>
+            <div>
+                <input type="radio" id="opzione3" name="opzioni" value="opzione3">
+                <label for="opzione3">Opzione 3</label>
+            </div>
+            <div class="code-block">
+                <code>&lt;input type="radio" id="opzione1" name="opzioni" value="opzione1"&gt;<br>
+                &lt;input type="radio" id="opzione2" name="opzioni" value="opzione2"&gt;<br>
+                &lt;input type="radio" id="opzione3" name="opzioni" value="opzione3"&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label>Checkbox:</label><br>
+            <div>
+                <input type="checkbox" id="check1" name="check1" value="valore1">
+                <label for="check1">Checkbox 1</label>
+            </div>
+            <div>
+                <input type="checkbox" id="check2" name="check2" value="valore2">
+                <label for="check2">Checkbox 2</label>
+            </div>
+            <div>
+                <input type="checkbox" id="check3" name="check3" value="valore3">
+                <label for="check3">Checkbox 3</label>
+            </div>
+            <div class="code-block">
+                <code>&lt;input type="checkbox" id="check1" name="check1" value="valore1"&gt;<br>
+                &lt;input type="checkbox" id="check2" name="check2" value="valore2"&gt;<br>
+                &lt;input type="checkbox" id="check3" name="check3" value="valore3"&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="range">Range:</label>
+            <input type="range" id="range" name="range" min="0" max="100">
+            <div class="code-block">
+                <code>&lt;input type="range" id="range" name="range" min="0" max="100"&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="colore">Colore:</label>
+            <input type="color" id="colore" name="colore">
+            <div class="code-block">
+                <code>&lt;input type="color" id="colore" name="colore"&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="file">File:</label>
+            <input type="file" id="file" name="file">
+            <div class="code-block">
+                <code>&lt;input type="file" id="file" name="file"&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="hidden">Input Nascosto:</label>
+            <input type="hidden" id="hidden" name="hidden" value="valore_nascosto">
+            <div class="code-block">
+                <code>&lt;input type="hidden" id="hidden" name="hidden" value="valore_nascosto"&gt;</code>
+            </div>
+        </div>
+
+        <!--
+        <div class="input-container">
+            <label for="url">URL:</label>
+            <input type="url" id="url" name="url">
+            <div class="code-block">
+                <code>&lt;input type="url" id="url" name="url"&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="mese">Mese:</label>
+            <input type="month" id="mese" name="mese">
+            <div class="code-block">
+                <code>&lt;input type="month" id="mese" name="mese"&gt;</code>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="settimana">Settimana:</label>
+            <input type="week" id="settimana" name="settimana">
+            <div class="code-block">
+                <code>&lt;input type="week" id="settimana" name="settimana"&gt;</code>
+            </div>
+        </div>
+        -->
+
+
+        <button type="submit">Invia</button>
+        <button type="reset">Resetta</button>
+    </form>
+</body>
+</html>
