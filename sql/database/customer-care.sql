@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS customer_care;
 CREATE DATABASE customer_care;
 USE customer_care;
 
@@ -87,7 +88,7 @@ CREATE TABLE EVENTO (
     ID_Evento INT UNSIGNED NOT NULL AUTO_INCREMENT,
     FK_ID_Ticket INT UNSIGNED NOT NULL,
     FK_ID_Operatore INT UNSIGNED NULL COMMENT 'Operatore che ha gestito l''evento (NULL se azione di sistema)',
-    Tipo_Evento ENUM('CREAZIONE', 'ASSEGNAZIONE', 'TELEFONATA', 'EMAIL', 'CAMBIO_LIVELLO', 'NOTA_OPERATORE', 'CHIUSURA') NOT NULL COMMENT 'Tipologia di evento registrato',
+    Tipo_Evento ENUM('ASSEGNAZIONE', 'TELEFONATA', 'EMAIL', 'CAMBIO_LIVELLO', 'NOTA_OPERATORE', 'CHIUSURA') NOT NULL COMMENT 'Tipologia di evento registrato',
     Data_Ora_Evento TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Data e ora in cui l''evento e stato registrato',
     Data_Ora_Inizio_Intervento TIMESTAMP NULL COMMENT 'Per interventi specifici dell''operatore',
     Data_Ora_Fine_Intervento TIMESTAMP NULL COMMENT 'Per interventi specifici dell''operatore',
@@ -99,3 +100,67 @@ CREATE TABLE EVENTO (
     CONSTRAINT FK_Evento_Ticket FOREIGN KEY (FK_ID_Ticket) REFERENCES TICKET(ID_Ticket) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT FK_Evento_Operatore FOREIGN KEY (FK_ID_Operatore) REFERENCES OPERATORE(ID_Operatore) ON DELETE SET NULL ON UPDATE CASCADE
 ) COMMENT='Tracciamento di tutte le comunicazioni e interventi su un ticket';
+
+
+-- ========================
+-- INSERIMENTO DATI
+-- ========================
+
+-- Lingue
+INSERT INTO LINGUA (Codice_Lingua, Nome_Lingua) VALUES
+('EN', 'Inglese'),
+('IT', 'Italiano'),
+('FR', 'Francese'),
+('DE', 'Tedesco'),
+('ES', 'Spagnolo');
+
+-- Clienti
+INSERT INTO CLIENTE (Nome, Cognome, Email, Documento_Riconoscimento_Tipo, Documento_Riconoscimento_Numero) VALUES
+('Mario', 'Rossi', 'mario.rossi@email.com', 'CI', 'AR123456'),
+('Laura', 'Bianchi', 'laura.bianchi@email.com', 'Passaporto', 'YA789012'),
+('John', 'Smith', 'john.smith@email.com', 'CI', 'JS654321');
+
+-- Operatori
+INSERT INTO OPERATORE (Nome, Cognome, Capacita_Decisionale) VALUES
+('Giulia', 'Verdi', 'L1'),
+('Luca', 'Neri', 'L2'),
+('Anne', 'Müller', 'L3');
+
+-- Competenze linguistiche operatori
+INSERT INTO OPERATORE_LINGUA (FK_ID_Operatore, FK_Codice_Lingua) VALUES
+(1, 'EN'), (1, 'IT'), (1, 'FR'),
+(2, 'EN'), (2, 'FR'),
+(3, 'EN'), (3, 'DE'), (3, 'IT');
+
+-- Ticket di assistenza
+INSERT INTO TICKET (FK_ID_Cliente, Reservation_Number, Flight_Number, FK_Codice_Lingua_Richiesta, Oggetto_Richiesta, Livello_Attuale, Stato_Ticket, Data_Ora_Inoltro) VALUES
+(1, 'R123456', 'AZ789', 'IT', 'Problema con il bagaglio', 'L1', 'Chiuso_Irricevibile', '2023-01-13 07:36:50'),
+(2, 'R654321', 'LH456', 'FR', 'Richiesta informazioni volo', 'L1', 'Chiuso_Risolto', '2024-02-13 07:36:50'),
+(3, 'R987654', 'BA123', 'EN', 'Modifica prenotazione', 'L2', 'Chiuso_Risolto', '2024-11-13 07:36:50'),
+(2, 'R123456', 'AZ791', 'IT', 'Ostess scrortesi', 'L1', 'Chiuso_Irricevibile', '2025-01-13 07:36:50'),
+(2, 'R654321', 'LH449', 'IT', 'Richiesta rimborso', 'L1', 'Aperto', '2025-02-13 07:36:50'),
+(3, 'R987650', 'XX128', 'EN', 'Modifica prenotazione', 'L1', 'Aperto', '2025-03-13 07:36:50'),
+(3, 'R987662', 'XX136', 'EN', 'Modifica prenotazione', 'L1', 'Aperto', '2025-05-13 07:36:50'),
+(3, 'R987654', 'XX142', 'EN', 'Modifica prenotazione', 'L2', 'Aperto', '2025-05-13 07:36:50');
+
+-- Eventi legati ai ticket
+INSERT INTO EVENTO (FK_ID_Ticket, FK_ID_Operatore, Tipo_Evento, Data_Ora_Inizio_Intervento, Data_Ora_Fine_Intervento, Nota_Esplicativa, Esito_Intervento) VALUES
+(1, 1, 'TELEFONATA', NOW(), NOW(), 'Cliente informato sullo stato del bagaglio.', 'RISOLTO_POSITIVAMENTE'),
+(2, 2, 'EMAIL', NOW(), NOW(), 'Risposta inviata con le informazioni richieste.', 'RISOLTO_POSITIVAMENTE'),
+(3, 3, 'CAMBIO_LIVELLO', NULL, NULL, 'Ticket escalato a livello superiore.', NULL),
+(1, 1, 'TELEFONATA', NOW(), NOW(), 'Cliente informato di questo e quello.', 'RISOLTO_POSITIVAMENTE'),
+(2, 1, 'EMAIL', NOW(), NOW(), 'Risposta inviata con le informazioni richieste.', 'RISOLTO_POSITIVAMENTE'),
+(3, 1, 'CAMBIO_LIVELLO', NULL, NULL, 'Ticket escalato a livello superiore.', NULL);
+
+-- Feedback dei clienti
+INSERT INTO FEEDBACK_CLIENTE (FK_ID_Ticket, Valutazione_Soddisfazione, Motivazioni) VALUES
+(1, 'Ottimo', 'Risposta rapida e cortese.'),
+(2, 'Buono', 'Servizio soddisfacente.'),
+(3, 'Sufficiente', 'Ci è voluto un po’ di tempo.');
+
+-- Giudizi interni sul cliente
+INSERT INTO GIUDIZIO_INTERNO_CLIENTE (FK_ID_Ticket, FK_ID_Operatore_Esprimente, Descrizione_Comportamento_Cliente) VALUES
+(1, 1, 'Cliente collaborativo e cortese.'),
+(2, 2, 'Cliente impaziente ma educato.'),
+(3, 3, 'Cliente ha usato un tono aggressivo durante la chiamata.');
+
