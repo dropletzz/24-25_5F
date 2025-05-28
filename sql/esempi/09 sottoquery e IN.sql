@@ -42,3 +42,25 @@ WHERE id IN (
   GROUP BY posts.id
   HAVING COUNT(*) >= 3
 );
+
+
+USE customer_care;
+-- seleziona gli operatori che parlano
+-- sia italiano che francese
+SELECT op_ita.* FROM (
+  SELECT o.* FROM operatore o
+  JOIN operatore_lingua ol ON ol.FK_ID_Operatore = o.ID_Operatore
+  WHERE ol.FK_Codice_Lingua = "IT"
+) op_ita
+JOIN operatore_lingua ol ON op_ita.ID_Operatore = ol.FK_ID_Operatore
+WHERE ol.FK_Codice_Lingua = "FR";
+
+-- stessa query di prima ma con le CTE (più chiara)
+WITH op_ita AS (
+  SELECT o.* FROM operatore o
+  JOIN operatore_lingua ol ON ol.FK_ID_Operatore = o.ID_Operatore
+  WHERE ol.FK_Codice_Lingua = "IT"
+)
+SELECT op_ita.* FROM op_ita
+JOIN operatore_lingua ol ON op_ita.ID_Operatore = ol.FK_ID_Operatore
+WHERE ol.FK_Codice_Lingua = "FR";
