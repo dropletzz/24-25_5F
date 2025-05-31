@@ -5,7 +5,7 @@ USE banca;
 CREATE TABLE conti (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome_utente VARCHAR(64) NOT NULL,
-    saldo DECIMAL(10, 2) NOT NULL
+    saldo DECIMAL(16, 2) NOT NULL
 );
 
 INSERT INTO conti (nome_utente, saldo) VALUES
