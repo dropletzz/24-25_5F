@@ -1,0 +1,100 @@
+
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <title>SPA immagini</title>
+    </head>
+
+    <body>
+        <div class="contenitore-immagine">
+            <span class="button" onclick="nuovaImmagineCasuale()">Immagine casuale</span>
+            <span class="button" onclick="aggiungiAiPreferiti()">Aggiungi ai preferiti</span>
+            <br/><br/>
+            <img id="immagine" src="" alt="">
+        </div>
+
+        <div class="contenitore-preferiti">
+            <h2 class="preferiti-titolo">
+                Preferiti
+                <span class="button" onclick="svuotaPreferiti()">Svuota lista</span>
+            </h2>
+            <div id="preferiti">
+            </div>
+        </div>
+
+
+        <script>
+            aggiornaPreferiti();
+            nuovaImmagineCasuale();
+
+            async function nuovaImmagineCasuale() {
+                const url = "https://cataas.com/cat?json=true";
+                    
+                try {
+                    // faccio una richiesta http GET
+                    const response = await fetch(url);
+                    // faccio il parsing della risposta come JSON
+                    const catData = await response.json();
+
+                    // costruisco l'URL dell'immagine e la inserisco nella pagina
+                    const imageUrl = "https://cataas.com/cat/" + catData.id;
+                    const img = document.getElementById("immagine");
+                    img.src = imageUrl;
+                } catch (error) {
+                    console.log("Errore chiamata GET", error.message);
+                }
+            }
+
+            async function aggiungiAiPreferiti() {
+                const imgTag = document.getElementById("immagine");
+                const immagine = {
+                    image_url: imgTag.src,
+                    rating: 5,
+                    description: ""
+                };
+
+                try {
+                    const response = await fetch("/api/images", {
+                        method: "POST",
+                        body: JSON.stringify(immagine)
+                    });
+
+                    // aggiorno la lista dei preferiti
+                    await aggiornaPreferiti();
+                }
+                catch (e) {
+                    console.log("Errore in POST /api/images", error.message);
+                }
+            }
+
+            async function svuotaPreferiti() {
+                // TODO cancellare tutte le immagini salvate
+                const response = await fetch("/api/images", { method: 'DELETE' });
+                if (response.status === 200) {
+                    const divPreferiti = document.getElementById("preferiti");
+                    divPreferiti.textContent = ''; // svuoto elenco di preferiti
+                }
+            }
+
+            async function aggiornaPreferiti() {
+                try {
+                    // faccio una richiesta http GET
+                    const response = await fetch("/api/images");
+                    // faccio il parsing della risposta come JSON
+                    const immagini = await response.json();
+
+                    // aggiorna la pagina HTML con i nuovi preferiti
+                    const divPreferiti = document.getElementById("preferiti");
+                    divPreferiti.textContent = ''; // svuoto elenco di preferiti
+                    immagini.forEach(immagine => { // ricreo tutto l'elenco
+                        const nuovaImg = document.createElement("img");
+                        nuovaImg.src = immagine.image_url;
+                        divPreferiti.appendChild(nuovaImg);
+                    });
+                } catch (error) {
+                    console.log("Errore in GET /api/images", error.message);
+                }
+            }
+        </script>
+    </body>
+</html>

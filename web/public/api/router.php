@@ -42,6 +42,10 @@ else if (req_is("POST", "/api/images")) {
         "rating" => $req_body['rating']
     ]);
 }
+else if (req_is("DELETE", "/api/images")) {
+    $model->deleteAllImages();
+    respond(200);
+}
 else if (req_is("GET", "/api/images/:id")) {
     $id = $params[0];
     $image = $model->getImage($id);

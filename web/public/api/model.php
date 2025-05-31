@@ -40,6 +40,11 @@ class Model {
         $stmt->bind_param("i", $id);
         return $stmt->execute() && $stmt->affected_rows > 0;
     }
+
+    function deleteAllImages() {
+        $stmt = $this->conn->prepare("DELETE FROM images");
+        return $stmt->execute();
+    }
 }
 
 function getDbConnection($dbname) {
